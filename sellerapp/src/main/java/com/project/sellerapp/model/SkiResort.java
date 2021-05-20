@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.project.sellerapp.dto.SkiResortDTO;
+
 @Entity
 public class SkiResort {
 	
@@ -44,5 +46,39 @@ public class SkiResort {
 	
 	@Column(unique = false, nullable = false)
 	private double capacity;
+	
+	
+
+	public SkiResort() {
+		super();
+	}
+
+
+	public SkiResort(SkiResortDTO sr) {
+		super();
+		
+		
+	}
+
+
+
+
+	public SkiResort(Long id, String name, String description, String country, double liftPrice, double gondolaPrice,
+			Date seasonStarts, Date seasonEnds, int groupCount, double ticketDeposit, double capacity) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.country = country;
+		this.liftPrice = liftPrice;
+		this.gondolaPrice = gondolaPrice;
+		this.seasonStarts = seasonStarts;
+		this.seasonEnds = seasonEnds;
+		this.groupCount = groupCount;
+		this.ticketDeposit = ticketDeposit;
+		this.capacity = capacity;
+	}
+	
+	
 
 }

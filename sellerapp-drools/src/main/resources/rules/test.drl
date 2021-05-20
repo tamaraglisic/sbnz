@@ -1,0 +1,16 @@
+//created on: May 20, 2021
+package com.main
+
+import com.project.sellerapp.model.Tickets
+
+rule "Discount for half-day ticket"
+	no-loop
+		lock-on-active true
+    when
+        $t: Tickets( typeTicket == "POLUDNEVNA" )
+    then
+    	System.out.println("poludnevna karta " );
+        $t.addDiscount(35);
+        update($t);
+end
+
