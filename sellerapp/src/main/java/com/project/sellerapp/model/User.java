@@ -36,7 +36,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
-
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 public class User implements UserDetails{
 
 	@Id
@@ -82,6 +83,18 @@ public class User implements UserDetails{
 			Boolean verified, Set<Authority> authority) {
 		super();
 		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.active = active;
+		this.verified = verified;
+		this.authority = authority;
+	}
+
+	public User(String firstName, String lastName, String email, String password, Boolean active, Boolean verified,
+			Set<Authority> authority) {
+		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
