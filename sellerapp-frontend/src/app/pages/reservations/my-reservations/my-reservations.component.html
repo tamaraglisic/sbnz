@@ -1,0 +1,28 @@
+<div style="margin-left: 20px;">
+    <br>
+    <br>
+    <br>
+    <table class="styled-table">
+        <thead>
+        <tr>         
+         
+            <th>Th1</th>
+            <th>Th2</th>
+            <th>Cancel reservation</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let res of list">
+            <td>{{res.id}}</td>
+            <td>td2</td>
+            <td>
+                <!-- dva dana pre pocetka moze da otkaze rez-->
+                <button mat-button color="primary" (click)="cancelReservation(res.id)">Cancel</button>
+            </td>
+            </tr>
+    </tbody>
+
+    </table>
+    
+</div>

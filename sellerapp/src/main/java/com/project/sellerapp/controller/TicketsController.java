@@ -20,7 +20,7 @@ public class TicketsController {
 	@Autowired
 	private TicketsService ticketsService;
 	
-	@RequestMapping(value = "/final-price", method = RequestMethod.GET)
+	@RequestMapping(value = "/final-price", method = RequestMethod.PUT)
     public ResponseEntity<?> getTicketType(@RequestBody TicketsDTO ticketsDto) {
 		Tickets tickets = new Tickets(ticketsDto);
 		double price = ticketsService.getFinalPrice(tickets);

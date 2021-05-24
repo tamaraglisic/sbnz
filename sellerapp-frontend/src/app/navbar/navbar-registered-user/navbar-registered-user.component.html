@@ -1,0 +1,18 @@
+
+<link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
+
+<nav role="navigation" class="primary-navigation">
+  <ul>
+    <li><a href="">Home</a></li>
+    <li><a href="/ski-resorts">Ski resorts</a></li>
+    <li><a href="/capacity">Capacity</a></li>
+    <li>Reservations <i class="material-icons">arrow_drop_down</i>
+      <ul class="dropdown">
+        <li (click)="newReservation()">New reservation</li>
+        <li (click)="myReservations()">My reservations</li>
+      </ul>
+    </li>
+    <li (click)="profile()">Profile</li>
+    <li (click)="signOut()">Sign out</li>
+  </ul>
+</nav>
