@@ -16,7 +16,8 @@ public class TicketsDTO {
 
 	private Long id;
 	private SkiResortDTO skiResort;
-	private String typeTicket; // dnevna, poludnevna, nocn
+	private String typeTicket; // porodicna, grupna, pojedinacna
+	private String usingPeriod; // dnevna, poludnevna, nocn
 	private String transportType; // zicara, gondola, zicara+gondola
 	private Date usingStart;
 	private Date usingEnd;
@@ -29,12 +30,13 @@ public class TicketsDTO {
 		super();
 	}
 
-	public TicketsDTO(Long id, SkiResortDTO skiResort, String typeTicket, String transportType, Date usingStart,
+	public TicketsDTO(Long id, SkiResortDTO skiResort, String typeTicket, String usingPeriod, String transportType, Date usingStart,
 			Date usingEnd, double initialPrice, Set<TicketUserDTO> ticketUsers, double bill) {
 		super();
 		this.id = id;
 		this.skiResort = skiResort;
 		this.typeTicket = typeTicket;
+		this.usingPeriod = usingPeriod;
 		this.transportType = transportType;
 		this.usingStart = usingStart;
 		this.usingEnd = usingEnd;
@@ -65,6 +67,14 @@ public class TicketsDTO {
 
 	public void setTypeTicket(String typeTicket) {
 		this.typeTicket = typeTicket;
+	}
+
+	public String getUsingPeriod() {
+		return usingPeriod;
+	}
+
+	public void setUsingPeriod(String usingPeriod) {
+		this.usingPeriod = usingPeriod;
 	}
 
 	public String getTransportType() {

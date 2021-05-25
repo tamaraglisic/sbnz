@@ -30,7 +30,10 @@ public class Tickets {
 	private SkiResort skiResort;
 
 	@Column(unique = false, nullable = false)
-	private String typeTicket; // dnevna, poludnevna, nocna
+	private String typeTicket; // porodicna, grupna, pojedinacna
+	
+	@Column(unique = false, nullable = false)
+	private String usingPeriod; // dnevna, poludnevna, nocna
 	
 	@Column(unique = false, nullable = true)
 	private String transportType; // zicara, gondola, zicara+gondola
@@ -61,6 +64,7 @@ public class Tickets {
 		this.id = t.getId();
 		this.skiResort = new SkiResort(t.getSkiResort());
 		this.typeTicket = t.getTypeTicket();
+		this.usingPeriod = t.getUsingPeriod();
 		this.transportType = t.getTransportType();
 		this.usingStart = t.getUsingStart();
 		this.usingEnd = t.getUsingEnd();
@@ -78,12 +82,13 @@ public class Tickets {
 		}
 		return retVal;
 	}
-	public Tickets(Long id, SkiResort skiResort, String typeTicket, String transportType, Date usingStart,
+	public Tickets(Long id, SkiResort skiResort, String typeTicket, String usingPeriod, String transportType, Date usingStart,
 			Date usingEnd, double initialPrice, Set<TicketUser> ticketUsers, double bill) {
 		super();
 		this.id = id;
 		this.skiResort = skiResort;
 		this.typeTicket = typeTicket;
+		this.usingPeriod = usingPeriod;
 		this.transportType = transportType;
 		this.usingStart = usingStart;
 		this.usingEnd = usingEnd;
@@ -114,6 +119,14 @@ public class Tickets {
 
 	public void setTypeTicket(String typeTicket) {
 		this.typeTicket = typeTicket;
+	}
+
+	public String getUsingPeriod() {
+		return usingPeriod;
+	}
+
+	public void setUsingPeriod(String usingPeriod) {
+		this.usingPeriod = usingPeriod;
 	}
 
 	public String getTransportType() {
