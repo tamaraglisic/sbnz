@@ -12,10 +12,8 @@ import com.project.sellerapp.model.Tickets;
 @Service
 public class TicketsService {
 	
-	private static final Logger log = LoggerFactory.getLogger(TicketsService.class);
-
-	@Autowired
-	private KieContainer kieContainer;
+	private static Logger log = LoggerFactory.getLogger(TicketsService.class);
+	private final KieContainer kieContainer;
 
 	@Autowired
 	public TicketsService(KieContainer kieContainer) {
@@ -25,10 +23,12 @@ public class TicketsService {
 
 	public double getFinalPrice(Tickets tickets) {
 		System.out.println("Getting discount");
+		
 		KieSession kieSession = kieContainer.newKieSession("test-session");
 		kieSession.insert(tickets);
 		kieSession.fireAllRules();
 		kieSession.dispose();
+		
 		return tickets.getBill();
 		
 	}
