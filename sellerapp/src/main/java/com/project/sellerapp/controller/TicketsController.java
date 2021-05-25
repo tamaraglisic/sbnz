@@ -31,10 +31,10 @@ public class TicketsController {
 	@RequestMapping(value = "/final-price", method = RequestMethod.PUT)
     public double getTicketType(@RequestBody TicketsDTO ticketsDto) {
 		
-		Tickets tickets = new Tickets(ticketsDto);
-		log.debug("Item request received for: " + tickets.getId());
+		//Tickets tickets = new Tickets(ticketsDto);
+		log.debug("Item request received for: " + ticketsDto.getId());
 		
-		double price = ticketsService.getFinalPrice(tickets);
+		double price = ticketsService.getFinalPrice(ticketsDto);
 		System.out.println("Price: " + price);
         return price;
     }

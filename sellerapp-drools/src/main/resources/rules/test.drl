@@ -1,16 +1,59 @@
 //created on: May 20, 2021
 package com.main
 
-import com.project.sellerapp.model.Tickets
+import com.project.sellerapp.dto.TicketsDTO
 
 rule "Discount for half-day ticket"
 	no-loop
 		lock-on-active true
     when
-        $t: Tickets( typeTicket == "POLUDNEVNA" )
+        $t: TicketsDTO( typeTicket == "POLUDNEVNA" )
     then
     	System.out.println("poludnevna karta " );
-        $t.addDiscount(35);
+        $t.addDiscount(30);
         update($t);
 end
 
+rule "Increase price for night ticket"
+	no-loop
+		lock-on-active true
+    when
+        $t: TicketsDTO( typeTicket == "NOCNA" )
+    then
+    	System.out.println("nocna karta" );
+        $t.increasePrice(25);
+        update($t);
+end
+
+rule "Generate type-ticket GROUP"
+	no-loop 
+		lock-on-active true
+    when
+        $t: TicketsDTO($type: typeTicket, $count: getNumberOfUsers())
+    then
+    	if($count >= 20 && $type != "PORODICNA"){ 
+    		modify($t){
+    			setTypeTicket("GRUPNA")
+    		}
+    		System.out.println("grupna karta");
+    	}
+        
+        update($t);
+end
+
+rule "Generate type-ticket FAMILY"
+	no-loop 
+		lock-on-active true
+    when
+        $t: TicketsDTO($type: typeTicket, $odrasli: getUsersCount("ODRASLI"), $deca: getUsersCount("DECA"),
+        				 $seniori: getUsersCount("SENIORI"), $count: getNumberOfUsers())
+    then
+    	if($odrasli >= 2 && $deca >=1 && $seniori == 0){ 
+    		modify($t){
+    			setTypeTicket("PORODICNA")
+    		}
+    		System.out.println("porodicna karta");
+    	}
+        
+        update($t);
+end

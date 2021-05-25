@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.project.sellerapp.model.Tickets;
+import com.project.sellerapp.dto.TicketsDTO;
 
 @Service
 public class TicketsService {
@@ -21,7 +21,7 @@ public class TicketsService {
 		this.kieContainer = kieContainer;
 	}
 
-	public double getFinalPrice(Tickets tickets) {
+	public double getFinalPrice(TicketsDTO tickets) {
 		System.out.println("Getting discount");
 		
 		KieSession kieSession = kieContainer.newKieSession("test-session");

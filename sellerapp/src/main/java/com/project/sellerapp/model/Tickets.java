@@ -177,16 +177,6 @@ public class Tickets {
 		this.bill = bill;
 	}
 	
-	public int getNumberOfUsers() {
-		int count = 0;
-		for (TicketUser tu: this.ticketUsers) {
-			count = count + tu.getCount();
-		}
-		return count;
-	}
 	
-	public void addDiscount(double percent) {
-		this.bill = this.bill*(100-percent)/100;
-	}
 
 }

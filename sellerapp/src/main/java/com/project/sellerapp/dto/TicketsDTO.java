@@ -133,5 +133,21 @@ public class TicketsDTO {
 		return count;
 	}
 	
+	public void addDiscount(double percent) {
+		this.bill = this.bill*(100-percent)/100;
+	}
+	
+	public void increasePrice(double percent) {
+		this.bill = this.bill*(100+percent)/100;
+	}
+	
+	public int getUsersCount(String userType) {
+		int retVal = 0;
+		for(TicketUserDTO tu: this.ticketUsers) {
+			if(tu.getUserType().equals(userType))
+				retVal = tu.getCount();
+		}
+		return retVal;
+	}
 	
 }
