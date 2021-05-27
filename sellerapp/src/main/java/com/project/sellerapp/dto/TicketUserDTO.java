@@ -61,5 +61,11 @@ public class TicketUserDTO {
 	public void increaseTicketPrice(double percent) {
 		this.singleTicketPrice = this.singleTicketPrice*(100+percent)/100;
 	}
+
+	@Override
+	public String toString() {
+		String retVal = "User Type: " + this.userType + " Single ticket price: " + this.singleTicketPrice;
+		return retVal;
+	}
 	
 }

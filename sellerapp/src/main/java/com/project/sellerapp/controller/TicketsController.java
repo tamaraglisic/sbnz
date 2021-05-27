@@ -1,18 +1,19 @@
 package com.project.sellerapp.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.sellerapp.dto.TicketsDTO;
-import com.project.sellerapp.model.Tickets;
 import com.project.sellerapp.service.TicketsService;
 
 @RestController
@@ -30,7 +31,17 @@ public class TicketsController {
 
 	@RequestMapping(value = "/final-price", method = RequestMethod.PUT)
     public double getTicketType(@RequestBody TicketsDTO ticketsDto) {
-		
+		SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
+		String inputString1 = "25 05 2021";
+		String inputString2 = "28 05 2021";
+		try {
+			Date date1 = myFormat.parse(inputString1);
+		    Date date2 = myFormat.parse(inputString2);
+		    ticketsDto.setUsingStart(date1);
+		    ticketsDto.setUsingEnd(date2);
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
 		//Tickets tickets = new Tickets(ticketsDto);
 		log.debug("Item request received for: " + ticketsDto.getId());
 		

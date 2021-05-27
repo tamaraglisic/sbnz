@@ -150,4 +150,12 @@ public class TicketsDTO {
 		return retVal;
 	}
 	
+	
+
+	@Override
+	public String toString() {
+		String retVal = "Using start: " + this.usingStart + " Using end: " + this.usingEnd + " Type Ticket: " + this.typeTicket + " Ticket users: " + this.ticketUsers;
+		return retVal;
+	}
+	
 }

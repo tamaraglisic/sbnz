@@ -2,42 +2,42 @@
 package com.main
 
 import com.project.sellerapp.dto.TicketsDTO
+import com.project.sellerapp.dto.TicketUserDTO
+import com.project.sellerapp.helpers.Utility
 
 rule "Discount for half-day ticket"
 	no-loop
 		lock-on-active true
     when
-        $t: TicketsDTO( typeTicket == "POLUDNEVNA" )
+        $t: TicketsDTO(usingPeriod == "POLUDNEVNA", $users: ticketUsers )
+        $u: TicketUserDTO(userType == "ODRASLI" || userType== "DECA" || userType=="SENIOR") from $users
     then
     	System.out.println("poludnevna karta " );
-        $t.addDiscount(30);
-        update($t);
+        $u.addDiscountOnTicketPrice(35);
+       
 end
 
 rule "Increase price for night ticket"
 	no-loop
 		lock-on-active true
     when
-        $t: TicketsDTO( typeTicket == "NOCNA" )
+        $t: TicketsDTO(usingPeriod == "NOCNA", $users: ticketUsers )
+        $u: TicketUserDTO(userType == "ODRASLI" || userType== "DECA" || userType=="SENIOR") from $users
     then
     	System.out.println("nocna karta" );
-        $t.increasePrice(25);
-        update($t);
+        $u.increaseTicketPrice(25);
+        
 end
 
 rule "Generate type-ticket GROUP"
 	no-loop 
 		lock-on-active true
     when
-        $t: TicketsDTO($type: typeTicket, $count: getNumberOfUsers())
+        $t: TicketsDTO(typeTicket!="PORODICNA" && getNumberOfUsers()>=20)
     then
-    	if($count >= 20 && $type != "PORODICNA"){ 
-    		modify($t){
-    			setTypeTicket("GRUPNA")
-    		}
-    		System.out.println("grupna karta");
-    	}
-        
+ 
+    	$t.setTypeTicket("GRUPNA");
+    	System.out.println("grupna karta");
         update($t);
 end
 
@@ -45,15 +45,59 @@ rule "Generate type-ticket FAMILY"
 	no-loop 
 		lock-on-active true
     when
-        $t: TicketsDTO($type: typeTicket, $odrasli: getUsersCount("ODRASLI"), $deca: getUsersCount("DECA"),
-        				 $seniori: getUsersCount("SENIORI"), $count: getNumberOfUsers())
+        $t: TicketsDTO(getUsersCount("ODRASLI")>=2 && getUsersCount("DECA")>=1 && getUsersCount("SENIORI")==0)
     then
-    	if($odrasli >= 2 && $deca >=1 && $seniori == 0){ 
-    		modify($t){
-    			setTypeTicket("PORODICNA")
-    		}
-    		System.out.println("porodicna karta");
-    	}
+    	$t.setTypeTicket("PORODICNA");
+    	System.out.println("porodicna karta");
         
         update($t);
 end
+
+rule "Add CHILD discount"
+	no-loop 
+		lock-on-active true
+    when
+        $t: TicketsDTO($users: ticketUsers)
+        $u: TicketUserDTO(userType == "DECA") from $users
+    then
+    	$u.addDiscountOnTicketPrice(20);
+    	System.out.println("CHILD discount");
+
+end
+
+rule "Add SENIOR discount"
+	no-loop 
+		lock-on-active true
+    when
+        $t: TicketsDTO($users: ticketUsers)
+        $u: TicketUserDTO(userType == "SENIOR") from $users
+    then
+    	$u.addDiscountOnTicketPrice(10);
+    	System.out.println("SENIOR discount");
+
+end
+
+rule "Add SENIOR or ADULT discount based on period"
+	no-loop 
+		lock-on-active true
+    when
+        $t: TicketsDTO(Utility.getDays(usingStart, usingEnd) >= 2, $days: Utility.getDays(usingStart, usingEnd), $users: ticketUsers)
+        $u: TicketUserDTO(userType == "SENIOR" || userType == "ODRASLI") from $users
+    then
+    	$u.addDiscountOnTicketPrice($days*4);
+    	System.out.println("SENIOR or ADULT discount based on period");
+
+end
+
+rule "Add CHILD discount based on period"
+	no-loop 
+		lock-on-active true
+    when
+        $t: TicketsDTO( Utility.getDays(usingStart, usingEnd) >= 2, $days: Utility.getDays(usingStart, usingEnd),  $users: ticketUsers)
+        $u: TicketUserDTO(userType == "DECA") from $users
+    then
+    	$u.addDiscountOnTicketPrice($days*7);
+    	System.out.println("CHILD discount based on period");
+
+end
+
