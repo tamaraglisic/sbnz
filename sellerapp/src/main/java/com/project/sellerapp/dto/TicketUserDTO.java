@@ -8,12 +8,14 @@ public class TicketUserDTO {
 	
 	private String userType;
 	private int count;
+	private double singleTicketPrice;
 	
-	public TicketUserDTO(Long id, String userType, int count) {
+	public TicketUserDTO(Long id, String userType, int count, double singleTicketPrice) {
 		super();
 		this.id = id;
 		this.userType = userType;
 		this.count = count;
+		this.singleTicketPrice = singleTicketPrice;
 	}
 
 	public TicketUserDTO() {
@@ -44,5 +46,20 @@ public class TicketUserDTO {
 		this.count = count;
 	}
 
+	public double getSingleTicketPrice() {
+		return singleTicketPrice;
+	}
+
+	public void setSingleTicketPrice(double singleTicketPrice) {
+		this.singleTicketPrice = singleTicketPrice;
+	}
+
+	public void addDiscountOnTicketPrice(double percent) {
+		this.singleTicketPrice = this.singleTicketPrice*(100-percent)/100;
+	}
+	
+	public void increaseTicketPrice(double percent) {
+		this.singleTicketPrice = this.singleTicketPrice*(100+percent)/100;
+	}
 	
 }
