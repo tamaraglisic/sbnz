@@ -33,19 +33,19 @@ public class TicketsService {
 		kieSession.fireAllRules();
 		kieSession.dispose();
 		
-		tickets.setBill(calculateBill(tickets));
+		//tickets.setBill(calculateBill(tickets));
 		System.out.println(tickets);
 		
 		return tickets.getBill();
 		
 	}
 	
-	public double calculateBill(TicketsDTO tickets) {
-		double bill = 0;
-		long days = Utility.getDays(tickets.getUsingStart(), tickets.getUsingEnd());
-		for(TicketUserDTO tu: tickets.getTicketUsers()) {
-			bill = bill + days*tu.getSingleTicketPrice()*tu.getCount();
-		}
-		return bill;
-	}
+//	public double calculateBill(TicketsDTO tickets) {
+//		double bill = 0;
+//		long days = Utility.getDays(tickets.getUsingStart(), tickets.getUsingEnd());
+//		for(TicketUserDTO tu: tickets.getTicketUsers()) {
+//			bill = bill + days*tu.getSingleTicketPrice()*tu.getCount();
+//		}
+//		return bill;
+//	}
 }

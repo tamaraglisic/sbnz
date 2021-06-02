@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.project.sellerapp.helpers.Utility;
 import com.project.sellerapp.model.SkiResort;
 import com.project.sellerapp.model.TicketUser;
 
@@ -24,6 +25,7 @@ public class TicketsDTO {
 	private double initialPrice;
 	private Set<TicketUserDTO> ticketUsers; // TicketUser, count
 	private double bill;
+	private Set<String> privilege; // student or loyalty
 	
 	
 	public TicketsDTO() {
@@ -31,7 +33,23 @@ public class TicketsDTO {
 	}
 
 	public TicketsDTO(Long id, SkiResortDTO skiResort, String typeTicket, String usingPeriod, String transportType, Date usingStart,
-			Date usingEnd, double initialPrice, Set<TicketUserDTO> ticketUsers, double bill) {
+			Date usingEnd, double initialPrice, Set<TicketUserDTO> ticketUsers, double bill, Set<String> privilege) {
+		super();
+		this.id = id;
+		this.skiResort = skiResort;
+		this.typeTicket = typeTicket;
+		this.usingPeriod = usingPeriod;
+		this.transportType = transportType;
+		this.usingStart = usingStart;
+		this.usingEnd = usingEnd;
+		this.initialPrice = initialPrice;
+		this.ticketUsers = ticketUsers;
+		this.bill = bill;
+		this.privilege = privilege;
+	}
+
+	public TicketsDTO(Long id, SkiResortDTO skiResort, String typeTicket, String usingPeriod, String transportType,
+			Date usingStart, Date usingEnd, double initialPrice, Set<TicketUserDTO> ticketUsers, double bill) {
 		super();
 		this.id = id;
 		this.skiResort = skiResort;
@@ -125,6 +143,14 @@ public class TicketsDTO {
 		this.bill = bill;
 	}
 	
+	public Set<String> getPrivilege() {
+		return privilege;
+	}
+
+	public void setPrivilege(Set<String> privilege) {
+		this.privilege = privilege;
+	}
+
 	public int getNumberOfUsers() {
 		int count = 0;
 		for (TicketUserDTO tu: this.ticketUsers) {
@@ -150,6 +176,19 @@ public class TicketsDTO {
 		return retVal;
 	}
 	
+	public void addToBill(double price) {
+		long days = Utility.getDays(this.getUsingStart(), this.getUsingEnd());
+		this.bill = this.bill +days*price;
+	}
+	
+	public void calculateBill() {
+		double bill = 0;
+		long days = Utility.getDays(this.getUsingStart(), this.getUsingEnd());
+		for(TicketUserDTO tu: this.getTicketUsers()) {
+			bill = bill + days*tu.getSingleTicketPrice()*tu.getCount();
+		}
+		this.bill = bill;
+	}
 	
 
 	@Override
