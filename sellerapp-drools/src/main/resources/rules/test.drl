@@ -7,6 +7,7 @@ import com.project.sellerapp.helpers.Utility
 import java.util.ArrayList;
 
 rule "Discount for half-day ticket"
+	agenda-group "using_period"
 	lock-on-active true
     when
         $t: TicketsDTO(usingPeriod == "POLUDNEVNA", $users: ticketUsers )
@@ -18,6 +19,7 @@ rule "Discount for half-day ticket"
 end
 
 rule "Increase price for night ticket"
+	agenda-group "using_period"
 	lock-on-active true
     when
         $t: TicketsDTO(usingPeriod == "NOCNA", $users: ticketUsers )
@@ -29,6 +31,7 @@ rule "Increase price for night ticket"
 end
 
 rule "Generate type-ticket GROUP"
+	agenda-group "type_ticket"
 	lock-on-active true
 		
     when
@@ -40,6 +43,7 @@ rule "Generate type-ticket GROUP"
 end
 
 rule "Generate type-ticket FAMILY"
+	agenda-group "type_ticket"
 	lock-on-active true
 		
     when
@@ -53,6 +57,7 @@ rule "Generate type-ticket FAMILY"
 end
 
 rule "Add Group discount"
+	agenda-group "type_ticket_discount"
 	salience -4
 	no-loop true
     when
@@ -64,6 +69,8 @@ rule "Add Group discount"
 end
 
 rule "Add Family discount"
+	agenda-group "type_ticket_discount"
+
 	salience -4
 	no-loop true
     when
@@ -75,6 +82,8 @@ rule "Add Family discount"
 end
 
 rule "Add Family loyalty discount"
+	agenda-group "type_ticket_discount"
+
 	salience -3
 	no-loop true
     when
@@ -85,13 +94,14 @@ rule "Add Family loyalty discount"
         )
        	eval($value >= 1)
     then
-    	$t.calculateBill();
+    	//$t.calculateBill();
     	$t.addDiscount(15);
     	System.out.println("FAMILY LOYALTY discount");
-
 end
 
 rule "Add CHILD discount"
+	agenda-group "user_type_discount"
+
 	lock-on-active true
     when
         $t: TicketsDTO($users: ticketUsers)
@@ -103,6 +113,8 @@ rule "Add CHILD discount"
 end
 
 rule "Add SENIOR discount"
+	agenda-group "user_type_discount"
+
 	lock-on-active true
     when
         $t: TicketsDTO($users: ticketUsers)
@@ -114,6 +126,8 @@ rule "Add SENIOR discount"
 end
 
 rule "Add SENIOR or ADULT discount based on period"
+	agenda-group "period_discount"
+
 	lock-on-active true
     when
         $t: TicketsDTO(Utility.getDays(usingStart, usingEnd) >= 2, $days: Utility.getDays(usingStart, usingEnd), $users: ticketUsers)
@@ -125,6 +139,8 @@ rule "Add SENIOR or ADULT discount based on period"
 end
 
 rule "Add CHILD discount based on period"
+	agenda-group "period_discount"
+
 	lock-on-active true
     when
         $t: TicketsDTO( Utility.getDays(usingStart, usingEnd) >= 2, $days: Utility.getDays(usingStart, usingEnd),  $users: ticketUsers)
@@ -136,6 +152,8 @@ rule "Add CHILD discount based on period"
 end
 
 rule "Get bill"
+	agenda-group "calculating_bill"
+
 	salience -1
 	no-loop true
     when
@@ -157,6 +175,8 @@ rule "Get bill"
 end
 
 rule "Get bill 2"
+	agenda-group "calculating_bill"
+
 	salience -0.9
 	no-loop true
     when
@@ -181,6 +201,8 @@ rule "Get bill 2"
 end
 
 rule "Get bill 2.1"
+	agenda-group "calculating_bill"
+
 	salience -0.9
 	no-loop true
     when
@@ -203,6 +225,8 @@ rule "Get bill 2.1"
 end
 
 rule "Get bill 2.2"
+	agenda-group "calculating_bill"
+
 	salience -0.9
 	no-loop true
     when
@@ -227,6 +251,8 @@ end
 
 
 rule "Get bill 3"
+	agenda-group "calculating_bill"
+
 	salience -0.8
 	no-loop true
     when
@@ -251,6 +277,8 @@ rule "Get bill 3"
 end
 
 rule "Get bill 3.1"
+	agenda-group "calculating_bill"
+
 	salience -0.8
 	no-loop true
     when
@@ -275,6 +303,8 @@ rule "Get bill 3.1"
 end
 
 rule "Get bill 3.2"
+	agenda-group "calculating_bill"
+
 	salience -0.8
 	no-loop true
     when
@@ -296,6 +326,25 @@ rule "Get bill 3.2"
    	
    		System.out.println("Calculate bill with student privilege type ticket porodicna (deca)");
     	
+end
+
+rule "Get bill 3.3"
+	agenda-group "calculating_bill"
+
+	salience -0.8
+	no-loop true
+    when
+        $t: TicketsDTO(typeTicket == "PORODICNA", $ps: privilege)
+        Number($value: intValue >= 1) from accumulate(
+        	String($p: this, this.contains("Loyalty")) from $ps,
+        	count($p)
+        )
+        
+       	eval($value >= 1)
+    then
+    	$t.calculateBill();
+    	System.out.println("Calculate bill with loyalty privilege type ticket porodicna");
+
 end
 
 

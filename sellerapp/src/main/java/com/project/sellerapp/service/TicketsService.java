@@ -29,8 +29,32 @@ public class TicketsService {
 		System.out.println("Getting discount");
 		System.out.println(new Date());
 		KieSession kieSession = kieContainer.newKieSession("test-session");
+		
+		kieSession.getAgenda().getAgendaGroup("using_period").setFocus();
 		kieSession.insert(tickets);
 		kieSession.fireAllRules();
+		
+		kieSession.getAgenda().getAgendaGroup("user_type_discount").setFocus();
+		kieSession.insert(tickets);
+		kieSession.fireAllRules();
+		
+		
+		kieSession.getAgenda().getAgendaGroup("period_discount").setFocus();
+		kieSession.insert(tickets);
+		kieSession.fireAllRules();
+		
+		kieSession.getAgenda().getAgendaGroup("type_ticket").setFocus();
+		kieSession.insert(tickets);
+		kieSession.fireAllRules();
+		
+		kieSession.getAgenda().getAgendaGroup("calculating_bill").setFocus();
+		kieSession.insert(tickets);
+		kieSession.fireAllRules();
+		
+		kieSession.getAgenda().getAgendaGroup("type_ticket_discount").setFocus();
+		kieSession.insert(tickets);
+		kieSession.fireAllRules();
+		
 		kieSession.dispose();
 		
 		//tickets.setBill(calculateBill(tickets));
