@@ -1,6 +1,7 @@
 package com.project.sellerapp.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -49,4 +50,22 @@ public class TicketsController {
 		System.out.println("Price: " + price);
         return price;
     }
+	@RequestMapping(value = "/occupacy", method = RequestMethod.GET)
+	public double calculateOccupacyRate() {
+		SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
+		String inputString2 = "28 05 2021";
+		try {
+		    Date date2 = myFormat.parse(inputString2);
+		    Calendar cal = Calendar.getInstance(); 
+			cal.setTime(date2); 
+			cal.add(Calendar.DATE, 1);
+			Date nextDay = cal.getTime();
+			double occupacy = ticketsService.calculateOccupacy(nextDay, 1L);
+			return occupacy;
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		return 0;
+		
+	}
 }

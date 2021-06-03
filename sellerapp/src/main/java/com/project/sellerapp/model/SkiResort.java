@@ -78,6 +78,116 @@ public class SkiResort {
 		this.ticketDeposit = ticketDeposit;
 		this.capacity = capacity;
 	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public String getDescription() {
+		return description;
+	}
+
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
+	public String getCountry() {
+		return country;
+	}
+
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+
+	public double getLiftPrice() {
+		return liftPrice;
+	}
+
+
+	public void setLiftPrice(double liftPrice) {
+		this.liftPrice = liftPrice;
+	}
+
+
+	public double getGondolaPrice() {
+		return gondolaPrice;
+	}
+
+
+	public void setGondolaPrice(double gondolaPrice) {
+		this.gondolaPrice = gondolaPrice;
+	}
+
+
+	public Date getSeasonStarts() {
+		return seasonStarts;
+	}
+
+
+	public void setSeasonStarts(Date seasonStarts) {
+		this.seasonStarts = seasonStarts;
+	}
+
+
+	public Date getSeasonEnds() {
+		return seasonEnds;
+	}
+
+
+	public void setSeasonEnds(Date seasonEnds) {
+		this.seasonEnds = seasonEnds;
+	}
+
+
+	public int getGroupCount() {
+		return groupCount;
+	}
+
+
+	public void setGroupCount(int groupCount) {
+		this.groupCount = groupCount;
+	}
+
+
+	public double getTicketDeposit() {
+		return ticketDeposit;
+	}
+
+
+	public void setTicketDeposit(double ticketDeposit) {
+		this.ticketDeposit = ticketDeposit;
+	}
+
+
+	public double getCapacity() {
+		return capacity;
+	}
+
+
+	public void setCapacity(double capacity) {
+		this.capacity = capacity;
+	}
 	
 	
 

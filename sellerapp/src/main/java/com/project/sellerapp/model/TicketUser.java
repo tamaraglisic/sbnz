@@ -18,8 +18,8 @@ public class TicketUser {
 	@Column(unique = false, nullable = false)
 	private String userType;
 	
-	@Column(unique = false, nullable = false)
-	private int count;
+	@Column(unique = false, nullable = true)
+	private int counts;
 	
 	@Column(unique = false, nullable = true)
 	private double singleTicketPrice;
@@ -27,7 +27,7 @@ public class TicketUser {
 	public TicketUser(TicketUserDTO t) {
 		this.id = t.getId();
 		this.userType = t.getUserType();
-		this.count = t.getCount();
+		this.counts = t.getCount();
 		this.singleTicketPrice = t.getSingleTicketPrice();
 	}
 	
@@ -39,7 +39,7 @@ public class TicketUser {
 		super();
 		this.id = id;
 		this.userType = userType;
-		this.count = count;
+		this.counts = count;
 		this.singleTicketPrice = singleTicketPrice;
 	}
 
@@ -60,11 +60,11 @@ public class TicketUser {
 	}
 
 	public int getCount() {
-		return count;
+		return counts;
 	}
 
 	public void setCount(int count) {
-		this.count = count;
+		this.counts = count;
 	}
 
 	public double getSingleTicketPrice() {

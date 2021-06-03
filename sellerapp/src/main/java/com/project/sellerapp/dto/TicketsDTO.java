@@ -194,6 +194,14 @@ public class TicketsDTO {
 		this.usingEnd = cal.getTime();
 	}
 	
+	public boolean isRegularGuest() {
+		
+		for (String privilege: this.privilege) {
+			if(privilege.equals("RegularGuest"))
+				return true;
+		}
+		return false;
+	}
 
 	@Override
 	public String toString() {
