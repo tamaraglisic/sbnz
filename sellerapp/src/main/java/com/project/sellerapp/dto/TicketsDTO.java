@@ -1,17 +1,10 @@
 package com.project.sellerapp.dto;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
 import com.project.sellerapp.helpers.Utility;
-import com.project.sellerapp.model.SkiResort;
-import com.project.sellerapp.model.TicketUser;
 
 public class TicketsDTO {
 
@@ -188,6 +181,17 @@ public class TicketsDTO {
 			bill = bill + days*tu.getSingleTicketPrice()*tu.getCount();
 		}
 		this.bill = bill;
+	}
+	
+	public void addPrivilege(String privilege) {
+		this.privilege.add(privilege);
+	}
+	
+	public void incrementUsingEnd() {
+		Calendar cal = Calendar.getInstance(); 
+		cal.setTime(this.usingEnd); 
+		cal.add(Calendar.DATE, 1);
+		this.usingEnd = cal.getTime();
 	}
 	
 
