@@ -1,0 +1,27 @@
+package cep
+import com.project.sellerapp.dto.LoginEvent
+
+
+declare SuspiciousUserEvent
+    @role(event)
+    @expires(1m)
+    username: String
+    reason: String
+end
+
+rule "More than 5 login requests in a minute"
+	no-loop
+    when
+        $u1: LoginEvent($username: username)
+        Number(intValue >= 5) from accumulate(
+            $u2: LoginEvent(
+                this != $u1, 
+                username == $username
+            )over window:time( 1m ),
+            count($u2)
+        )
+        not (SuspiciousUserEvent(username == $username, reason == "Many login requests"))
+    then
+    	System.out.println("Many login request" );
+        insert(new SuspiciousUserEvent($username, "Many login requests"));
+end

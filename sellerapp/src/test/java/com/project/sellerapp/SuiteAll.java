@@ -7,7 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 
 @RunWith(Suite.class)
-@SuiteClasses({TicketsServiceUnitTests.class})
+@SuiteClasses({TicketsServiceUnitTests.class, CEPRulesTests.class})
 public class SuiteAll {
 
 
