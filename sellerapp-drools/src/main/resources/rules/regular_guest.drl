@@ -30,6 +30,7 @@ rule "Regular Guest"
       
        eval($value >= 3 && $rezervacije.size()>=3)
     then
+    	$reservation.addPrivilege("REGULAR_GUEST");
     	System.out.println("Stalni posetilac" );
 
        

@@ -3,6 +3,7 @@ package com.project.sellerapp;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -531,6 +532,7 @@ public class TicketsServiceUnitTests {
 		TicketUserDTO senior = new TicketUserDTO(3L, "DECA", 2, 100);
 		ticketUsers.add(senior);
 		t.setTicketUsers(ticketUsers);
+		t.setPrivilege(new HashSet<>());
 		
 		//  karta broj dva
 		TicketsDTO t2 = new TicketsDTO();
@@ -583,6 +585,8 @@ public class TicketsServiceUnitTests {
 		kieSession.insert(regUser);
 		kieSession.insert(t);
 		kieSession.fireAllRules();
+		
+		assertEquals("REGULAR_GUEST",  new ArrayList<String>(t.getPrivilege()).get(0));
 		
 		kieSession.dispose();
 	}
