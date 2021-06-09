@@ -5,10 +5,10 @@ import java.util.Set;
 import com.project.sellerapp.model.Tickets;
 
 public class RegisteredUserDTO {
-	private Set<Tickets> tickets;
+	private Set<TicketsDTO> tickets;
 	
 
-	public RegisteredUserDTO(Set<Tickets> tickets) {
+	public RegisteredUserDTO(Set<TicketsDTO> tickets) {
 		super();
 		this.tickets = tickets;
 	}
@@ -17,11 +17,11 @@ public class RegisteredUserDTO {
 		super();
 	}
 
-	public Set<Tickets> getTickets() {
+	public Set<TicketsDTO> getTickets() {
 		return tickets;
 	}
 
-	public void setTickets(Set<Tickets> tickets) {
+	public void setTickets(Set<TicketsDTO> tickets) {
 		this.tickets = tickets;
 	}
 	

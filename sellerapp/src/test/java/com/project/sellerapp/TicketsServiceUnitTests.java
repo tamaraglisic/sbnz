@@ -16,6 +16,8 @@ import org.kie.api.runtime.KieSession;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.project.sellerapp.dto.RegisteredUserDTO;
+import com.project.sellerapp.dto.SkiResortDTO;
 import com.project.sellerapp.dto.TicketUserDTO;
 import com.project.sellerapp.dto.TicketsDTO;
 
@@ -499,5 +501,89 @@ public class TicketsServiceUnitTests {
 		
 		kieSession.dispose();
     }
-
+	
+	@Test
+    public void regularGuest() {
+		RegisteredUserDTO regUser =  new RegisteredUserDTO();
+		Set<TicketsDTO> userTickets = new HashSet<>();
+		SkiResortDTO resort = new SkiResortDTO(1L, "Kopaonik");
+		// jedna kaarta
+		TicketsDTO t = new TicketsDTO();
+		t.setSkiResort(resort);
+    	t.setTypeTicket("PORODICNA");
+    	t.setUsingPeriod("DNEVNA");
+  
+    	String inputString1 = "25 05 2021";
+		String inputString2 = "28 05 2021";
+		try {
+			Date date1 = myFormat.parse(inputString1);
+		    Date date2 = myFormat.parse(inputString2);
+		    t.setUsingStart(date1);
+		    t.setUsingEnd(date2);
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		
+		t.setBill(0);
+		Set<TicketUserDTO> ticketUsers = new HashSet<>();
+		TicketUserDTO odrasli = new TicketUserDTO(1L, "ODRASLI", 5, 100);
+		ticketUsers.add(odrasli);
+		TicketUserDTO senior = new TicketUserDTO(3L, "DECA", 2, 100);
+		ticketUsers.add(senior);
+		t.setTicketUsers(ticketUsers);
+		
+		//  karta broj dva
+		TicketsDTO t2 = new TicketsDTO();
+		t2.setSkiResort(resort);
+    	t2.setTypeTicket("PORODICNA");
+    	t2.setUsingPeriod("DNEVNA");
+  
+    	String inputString12 = "25 05 2020";
+		String inputString22 = "28 05 2020";
+		try {
+			Date date1 = myFormat.parse(inputString12);
+		    Date date2 = myFormat.parse(inputString22);
+		    t2.setUsingStart(date1);
+		    t2.setUsingEnd(date2);
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		
+		t2.setBill(0);
+		t2.setTicketUsers(ticketUsers);
+		
+		// karta br tri
+		TicketsDTO t3 = new TicketsDTO();
+		t3.setSkiResort(resort);
+    	t3.setTypeTicket("PORODICNA");
+    	t3.setUsingPeriod("DNEVNA");
+  
+    	String inputString13 = "25 05 2019";
+		String inputString23 = "28 05 2019";
+		try {
+			Date date1 = myFormat.parse(inputString13);
+		    Date date2 = myFormat.parse(inputString23);
+		    t3.setUsingStart(date1);
+		    t3.setUsingEnd(date2);
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		
+		t3.setBill(0);
+		t3.setTicketUsers(ticketUsers);
+		
+		userTickets.add(t);
+		userTickets.add(t2);
+		userTickets.add(t3);
+		
+		regUser.setTickets(userTickets);
+		
+		KieSession kieSession = kieContainer.newKieSession("test-session");
+		kieSession.getAgenda().getAgendaGroup("regular_guest").setFocus();
+		kieSession.insert(regUser);
+		kieSession.insert(t);
+		kieSession.fireAllRules();
+		
+		kieSession.dispose();
+	}
 }

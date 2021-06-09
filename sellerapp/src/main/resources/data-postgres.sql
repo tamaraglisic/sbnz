@@ -3,8 +3,11 @@ insert into authority (role) values ('ROLE_REGISTERED_USER');
 insert into authority (role) values ('ROLE_INSTRUCTOR');
 
 insert into users (type, email, password, verified) values ('admin','admin@gmail.com','$2a$10$RVzuprKddsjdq6P8QWmqF.sCj2uYPIUlbFVB.b7tJ9RdFNOOBNoXO' ,true);
+insert into users (type, email, password, verified) values ('registered_user','user@gmail.com','$2a$10$RVzuprKddsjdq6P8QWmqF.sCj2uYPIUlbFVB.b7tJ9RdFNOOBNoXO' ,true);
 
 insert into users_authority (user_id, authority_id) values (1, 1);
+insert into users_authority (user_id, authority_id) values (2, 2);
+
 
 insert into ski_resort (name, description, country, lift_price, gondola_price, season_starts, season_ends, group_count, ticket_deposit, capacity) values('Kopaonik','Skijaliste u Srbiji', 'Srbija', 4500, 1000, '2021-03-01 22:24:52', '2021-08-01 22:24:52', 20, 500, 10256);
 
@@ -16,3 +19,5 @@ insert into tickets (bill, initial_price, transport_type, type_ticket, using_sta
 
 insert into tickets_ticket_users(tickets_id, ticket_users_id) values(1,1);
 insert into tickets_ticket_users(tickets_id, ticket_users_id) values(1,2);
+
+insert into users_tickets(registered_user_id, tickets_id) values (2, 1);

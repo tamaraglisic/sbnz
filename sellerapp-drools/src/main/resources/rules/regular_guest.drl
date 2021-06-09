@@ -1,0 +1,36 @@
+package com.main
+
+import com.project.sellerapp.dto.*;
+import java.util.List;
+import java.util.Set;
+import java.util.Date;
+import com.project.sellerapp.helpers.Utility
+
+
+rule "Regular Guest"
+	agenda-group "regular_guest"
+	lock-on-active true
+    when
+        $u: RegisteredUserDTO($ts: tickets)
+        $reservation: TicketsDTO($id: skiResort.getId())
+        accumulate(
+			TicketsDTO($t: this, $datum: usingStart, $datum > Utility.minusMonths(new Date(), 36) && $resort : skiResort) from $ts,         	
+			
+         	$rezervacije: collectList($t),
+         	$resorts: collectList($resort)
+         )
+         Number($value: intValue >= 3) from accumulate(
+        	SkiResortDTO($s: this, $id == $s.getId()) from $resorts,
+        	count($s)
+        )
+        //Number($value: intValue >= 3) from accumulate(
+       // 	TicketsDTO($t: this, $datum: usingStart, $datum > Utility.minusMonths(new Date(), 36) && $id == skiResort.getId()) from $ts,
+       // 	count($t)
+       // )
+      
+       eval($value >= 3 && $rezervacije.size()>=3)
+    then
+    	System.out.println("Stalni posetilac" );
+
+       
+end

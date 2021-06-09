@@ -24,6 +24,12 @@ public class SkiResortDTO {
 		super();
 	}
 
+	public SkiResortDTO(Long id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
 	public SkiResortDTO(Long id, String name, String description, String country, double liftPrice, double gondolaPrice,
 			Date seasonStarts, Date seasonEnds, int groupCount, double ticketDeposit, double capacity) {
 		super();
