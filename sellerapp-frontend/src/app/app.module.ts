@@ -14,6 +14,8 @@ import { NavbarInstructorComponent } from './navbar/navbar-instructor/navbar-ins
 import { ResortModule } from './pages/resort/resort-module';
 import { NewReservationComponent } from './pages/reservations/new-reservation/new-reservation.component';
 import { ReservationsModule } from './pages/reservations/reservations-module';
+import { ChartsModule } from 'ng2-charts';
+import { ResortCapacityComponent } from './pages/resort/resort-capacity/resort-capacity.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,7 @@ import { ReservationsModule } from './pages/reservations/reservations-module';
     BrowserModule,
     AppRoutingModule,
     //AuthModule,
+    ChartsModule,
     ResortModule,
     ReservationsModule,
     MaterialModule,

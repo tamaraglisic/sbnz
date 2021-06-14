@@ -25,4 +25,12 @@ public class Utility {
 		return c.getTime();
 	
 	}
+	
+	public static Date getNextDay(Date fromDate) {
+		Calendar cal = Calendar.getInstance(); 
+		cal.setTime(fromDate); 
+		cal.add(Calendar.DATE, 1);
+		Date nextDay = cal.getTime();
+		return nextDay;
+	}
 }

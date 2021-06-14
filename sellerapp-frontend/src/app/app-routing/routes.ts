@@ -4,6 +4,7 @@ import { LoginGuard } from '../guards/login/login.service';
 import { LoginPageComponent } from '../pages/auth/login-page/login-page.component';
 import { ResortChooserComponent } from '../pages/resort/resort-chooser/resort-chooser.component';
 import { MyReservationsComponent } from '../pages/reservations/my-reservations/my-reservations.component';
+import { ResortCapacityComponent } from '../pages/resort/resort-capacity/resort-capacity.component';
 
 export const routes :Routes = [
 	// {
@@ -25,6 +26,12 @@ export const routes :Routes = [
 	{
 		path: 'my-reservations',
 		component: MyReservationsComponent,
+		canActivate: [LoginGuard]
+
+	},
+	{
+		path: 'capacity',
+		component: ResortCapacityComponent,
 		canActivate: [LoginGuard]
 
 	}
