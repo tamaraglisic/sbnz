@@ -1,5 +1,7 @@
 package com.project.sellerapp.helpers;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -32,5 +34,15 @@ public class Utility {
 		cal.add(Calendar.DATE, 1);
 		Date nextDay = cal.getTime();
 		return nextDay;
+	}
+	
+	public static String dateToString(Date convertDate) {
+		String pattern = "dd/MM/yyyy";
+
+		DateFormat df = new SimpleDateFormat(pattern);
+
+		String todayAsString = df.format(convertDate);
+
+		return todayAsString;
 	}
 }

@@ -1,3 +1,15 @@
+<br>
+<div style="display: block; width: 200px; height: 80px; margin-left:auto; margin-right:auto;">
+<mat-form-field appearance="fill">
+    <mat-label>Ski Resorts</mat-label>
+        <mat-select id="skiSelect" [(value)]="selected" (valueChange)="onSelection($event)">
+            <mat-option  *ngFor="let ski of resorts" id="ski{{ski.id}}" [value]="[ski.id]">
+                {{ski.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<br>
 <div style="display: block; width: 500px; height: 400px; margin-left:auto; margin-right:auto;">
     <canvas baseChart
         [datasets]="lineChartData" 

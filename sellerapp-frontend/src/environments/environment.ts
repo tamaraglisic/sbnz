@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'https://localhost:8080',
+  baseUrl: 'http://localhost:8080',
   login: 'auth/log-in',
   signUp: 'auth/sign-up',
   signUpAdmin: 'auth/sign-up-admin',
@@ -13,6 +13,7 @@ export const environment = {
   admin:'api/admin',
   registeredUser:'api/registered_user',
   user:'api/user',
+  skiResort:'ski-resort',
 };
 
 /*

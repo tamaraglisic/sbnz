@@ -14,25 +14,25 @@ export const routes :Routes = [
 	{
 		path: 'login',
 		component: LoginPageComponent,
-		canActivate: [LoginGuard]
+		//canActivate: [LoginGuard]
 
 	},
 	{
 		path: 'ski-resort',
 		component: ResortChooserComponent,
-		canActivate: [LoginGuard]
+		//canActivate: [LoginGuard]
 
 	},
 	{
 		path: 'my-reservations',
 		component: MyReservationsComponent,
-		canActivate: [LoginGuard]
+		//canActivate: [LoginGuard]
 
 	},
 	{
 		path: 'capacity',
 		component: ResortCapacityComponent,
-		canActivate: [LoginGuard]
+		//canActivate: [LoginGuard]
 
 	}
 ];
