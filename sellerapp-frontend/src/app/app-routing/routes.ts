@@ -5,6 +5,7 @@ import { LoginPageComponent } from '../pages/auth/login-page/login-page.componen
 import { ResortChooserComponent } from '../pages/resort/resort-chooser/resort-chooser.component';
 import { MyReservationsComponent } from '../pages/reservations/my-reservations/my-reservations.component';
 import { ResortCapacityComponent } from '../pages/resort/resort-capacity/resort-capacity.component';
+import { NewReservationComponent } from '../pages/reservations/new-reservation/new-reservation.component';
 
 export const routes :Routes = [
 	// {
@@ -34,5 +35,9 @@ export const routes :Routes = [
 		component: ResortCapacityComponent,
 		//canActivate: [LoginGuard]
 
+	},
+	{
+		path:'new-reservation',
+		component: NewReservationComponent,
 	}
 ];

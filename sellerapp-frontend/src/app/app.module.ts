@@ -16,6 +16,8 @@ import { NewReservationComponent } from './pages/reservations/new-reservation/ne
 import { ReservationsModule } from './pages/reservations/reservations-module';
 import { ChartsModule } from 'ng2-charts';
 import { ResortCapacityComponent } from './pages/resort/resort-capacity/resort-capacity.component';
+import { ConfirmationComponent } from './pages/shared/confirmation/confirmation.component';
+import { SharedModule } from './pages/shared/shared-module';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { ResortCapacityComponent } from './pages/resort/resort-capacity/resort-c
     ReservationsModule,
     MaterialModule,
     HttpClientModule,
+    SharedModule
   ],
   providers: [ {provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true}],
   bootstrap: [AppComponent]

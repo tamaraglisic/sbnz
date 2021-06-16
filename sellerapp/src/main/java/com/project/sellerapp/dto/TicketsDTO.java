@@ -195,7 +195,8 @@ public class TicketsDTO {
 	}
 	
 	public boolean isRegularGuest() {
-		
+		if(this.privilege == null)
+			return false;
 		for (String privilege: this.privilege) {
 			if(privilege.equals("RegularGuest"))
 				return true;
@@ -205,7 +206,7 @@ public class TicketsDTO {
 
 	@Override
 	public String toString() {
-		String retVal = "Using start: " + this.usingStart + " Using end: " + this.usingEnd + " Type Ticket: " + this.typeTicket + " Ticket users: " + this.ticketUsers;
+		String retVal = "bill: " + this.bill + "Using start: " + this.usingStart + " Using end: " + this.usingEnd + " Type Ticket: " + this.typeTicket + " Ticket users: " + this.ticketUsers;
 		return retVal;
 	}
 	

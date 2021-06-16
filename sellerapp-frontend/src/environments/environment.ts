@@ -14,6 +14,7 @@ export const environment = {
   registeredUser:'api/registered_user',
   user:'api/user',
   skiResort:'ski-resort',
+  tickets: 'tickets',
 };
 
 /*

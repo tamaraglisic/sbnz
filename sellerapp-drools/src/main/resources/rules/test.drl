@@ -191,7 +191,7 @@ rule "Get bill 2"
         	count($r)
         )
         
-        eval($Lvalue > 0 || $Svalue > 0)
+        eval($Lvalue > 0 && $Svalue > 0)
     then
     	
     	$t.addToBill($Lvalue * Utility.calculatePriceWithDiscount(15, $odrasli.getSingleTicketPrice()));
@@ -217,7 +217,7 @@ rule "Get bill 2.1"
         	count($r)
         )
         
-        eval($Lvalue > 0 || $Svalue > 0)
+        eval($Lvalue > 0 && $Svalue > 0)
     then
     	$t.addToBill($seniori.getCount()*$seniori.getSingleTicketPrice());
    		
@@ -241,7 +241,7 @@ rule "Get bill 2.2"
         	count($r)
         )
         
-        eval($Lvalue > 0 || $Svalue > 0)
+        eval($Lvalue > 0 && $Svalue > 0)
     then
     	$t.addToBill($deca.getCount()*$deca.getSingleTicketPrice());
    		
@@ -268,7 +268,7 @@ rule "Get bill 3"
         	count($r)
         )
         
-        eval($Lvalue == 0 || $Svalue > 0)
+        eval($Lvalue == 0 && $Svalue > 0)
     then
     	$t.addToBill($Svalue * Utility.calculatePriceWithDiscount(10, $odrasli.getSingleTicketPrice()));
     	$t.addToBill(($odrasli.getCount()-$Svalue) * $odrasli.getSingleTicketPrice());
@@ -294,7 +294,7 @@ rule "Get bill 3.1"
         	count($r)
         )
         
-        eval($Lvalue == 0 || $Svalue > 0)
+        eval($Lvalue == 0 && $Svalue > 0)
     then
     	$t.addToBill($seniori.getCount()*$seniori.getSingleTicketPrice());
    	
@@ -320,7 +320,7 @@ rule "Get bill 3.2"
         	count($r)
         )
         
-        eval($Lvalue == 0 || $Svalue > 0)
+        eval($Lvalue == 0 && $Svalue > 0)
     then
    		$t.addToBill($deca.getCount()*$deca.getSingleTicketPrice());
    	

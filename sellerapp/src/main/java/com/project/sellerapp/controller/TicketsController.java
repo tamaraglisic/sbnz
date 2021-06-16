@@ -3,12 +3,13 @@ package com.project.sellerapp.controller;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.sellerapp.dto.TicketsDTO;
 import com.project.sellerapp.service.TicketsService;
+
+
 
 @RestController
 @RequestMapping(value = "/tickets", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -31,7 +34,8 @@ public class TicketsController {
 
 
 	@RequestMapping(value = "/final-price", method = RequestMethod.PUT)
-    public double getTicketType(@RequestBody TicketsDTO ticketsDto) {
+    public ResponseEntity<TicketsDTO> getTicketType(@RequestBody TicketsDTO ticketsDto) {
+		System.out.println(ticketsDto);
 		SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
 		String inputString1 = "25 05 2021";
 		String inputString2 = "28 05 2021";
@@ -48,7 +52,7 @@ public class TicketsController {
 		
 		double price = ticketsService.getFinalPrice(ticketsDto);
 		System.out.println("Price: " + price);
-        return price;
+        return new ResponseEntity<>(ticketsDto, HttpStatus.OK);
     }
 	@RequestMapping(value = "/occupacy", method = RequestMethod.GET)
 	public double calculateOccupacyRate() {

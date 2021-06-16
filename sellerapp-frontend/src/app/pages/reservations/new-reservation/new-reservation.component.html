@@ -1,1 +1,66 @@
-<p>new-reservation works!</p>
+<form class="reactiveForm" [formGroup]="ticketForm" (ngSubmit)="makeReservation()">
+    <div style="margin-left: 100px;" class="example-container">
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Ski resort</mat-label>
+        <mat-select id="skiSelect" [(value)]="selected" (valueChange)="onSelection($event)" >
+            <mat-option  *ngFor="let ski of resorts" id="ski{{ski.id}}" [value]="ski">
+                {{ski.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-radio-group aria-label="Transport type" formControlName="transportType">
+        <mat-radio-button style="margin-left: 10px;" value="LIFT">Lift</mat-radio-button>
+        <mat-radio-button style="margin-left: 10px;" value="GONDOLA">Gondola</mat-radio-button>
+        <mat-radio-button style="margin-left: 10px;" value="LIFT+GONDOLA">Lift+Gondola</mat-radio-button>
+    </mat-radio-group>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [rangePicker]="picker"[min]="minDate" [max]="maxDate">
+          <input matStartDate formControlName="usingStart" placeholder="Start date">
+          <input matEndDate formControlName="usingEnd" placeholder="End date">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <mat-radio-group aria-label="Ticket using period"  formControlName="usingPeriod">
+        <mat-radio-button style="margin-left: 10px;" value="DNEVNA">Day</mat-radio-button>
+        <mat-radio-button style="margin-left: 10px;" value="POLUDNEVNA">Half-day</mat-radio-button>
+        <mat-radio-button style="margin-left: 10px;" value="NOCNA">Night</mat-radio-button>
+    </mat-radio-group>
+    <br>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Adult</mat-label>
+        <input type="number" step="1" matInput formControlName="adult" min="0" max="20">
+    </mat-form-field>
+    <mat-form-field appearance="fill" style="margin-left: 10px;">
+        <mat-label>Child</mat-label>
+        <input type="number" step="1" matInput formControlName="child" min="0" max="20">
+    </mat-form-field>
+    <mat-form-field appearance="fill"  style="margin-left: 10px;">
+        <mat-label>Senior</mat-label>
+        <input type="number" step="1" matInput formControlName="senior" min="0" max="20">
+    </mat-form-field>
+    <br>
+    <br>
+    <br>
+    <mat-label>Discount/Privilege</mat-label>
+    <br>   
+    <mat-form-field appearance="fill">
+        <mat-label>Loyalty</mat-label>
+        <input type="number" step="1" matInput formControlName="loyalty" min="0" max="20">
+    </mat-form-field>
+    <mat-form-field appearance="fill" style="margin-left: 10px;">
+        <mat-label>Student</mat-label>
+        <input type="number" step="1" matInput formControlName="student" min="0" max="20">
+    </mat-form-field>
+    
+    <br>
+    
+    <mat-dialog-actions align="end">
+        <button id="ticketSubmit" type="submit" mat-raised-button color="success" >Calculate bill</button>
+    </mat-dialog-actions>
+    </div>
+</form>
