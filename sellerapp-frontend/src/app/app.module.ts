@@ -18,6 +18,7 @@ import { ChartsModule } from 'ng2-charts';
 import { ResortCapacityComponent } from './pages/resort/resort-capacity/resort-capacity.component';
 import { ConfirmationComponent } from './pages/shared/confirmation/confirmation.component';
 import { SharedModule } from './pages/shared/shared-module';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { SharedModule } from './pages/shared/shared-module';
     ReservationsModule,
     MaterialModule,
     HttpClientModule,
-    SharedModule
+    SharedModule,
+    ToastrModule.forRoot()
   ],
   providers: [ {provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true}],
   bootstrap: [AppComponent]

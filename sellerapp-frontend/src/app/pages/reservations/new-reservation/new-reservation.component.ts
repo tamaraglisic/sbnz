@@ -101,6 +101,11 @@ export class NewReservationComponent implements OnInit {
       if (this.result === true){
         console.log("Confirm");
         // sacuvaj rezervaciju
+        this.ticketsService.add(this.res).subscribe(
+          res =>{
+            console.log("Reservation saved");
+          }
+        )
       }
     });
   }

@@ -2,6 +2,8 @@ package com.project.sellerapp.dto;
 
 import javax.persistence.Column;
 
+import com.project.sellerapp.model.TicketUser;
+
 public class TicketUserDTO {
 	
 	private Long id;
@@ -20,6 +22,13 @@ public class TicketUserDTO {
 
 	public TicketUserDTO() {
 		super();
+	}
+
+	public TicketUserDTO(TicketUser tu) {
+		this.id = tu.getId();
+		this.userType = tu.getUserType();
+		this.count = tu.getCount();
+		this.singleTicketPrice = tu.getSingleTicketPrice();
 	}
 
 	public Long getId() {

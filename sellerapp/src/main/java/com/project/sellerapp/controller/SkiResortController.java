@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,12 +35,14 @@ public class SkiResortController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
+	@PreAuthorize("hasRole('REGISTERED_USER')")
 	public ResponseEntity<List<SkiResortDTO>> getAllResorts(){
 		List<SkiResort> resorts = skiResortService.findAll();
 		return new ResponseEntity<>(toDTOList(resorts), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/occupancy/{id}", method = RequestMethod.GET)
+	@PreAuthorize("hasRole('REGISTERED_USER')")
 	public ResponseEntity<List<Occupancy>> getOccupancyForDays(@PathVariable Long id){
 		List<Occupancy> retVal = new ArrayList<Occupancy>();
 		Date forDay = new Date();

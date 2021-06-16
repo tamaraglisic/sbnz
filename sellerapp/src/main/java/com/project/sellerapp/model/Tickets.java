@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -47,7 +48,7 @@ public class Tickets {
 	@Column(unique = false, nullable = true)
 	private double initialPrice;
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 //	@JoinColumn(name = "ticket_id", nullable = true)
 	private Set<TicketUser> ticketUsers; // TicketUser, count
 	

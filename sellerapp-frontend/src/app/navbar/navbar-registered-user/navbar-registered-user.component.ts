@@ -18,10 +18,10 @@ ngOnInit(): void {
 
 
 myReservations(): void{
-
+  this.router.navigate(['/my-reservations']);
 }
 newReservation(): void{
-console.log("new res")
+  this.router.navigate(['/new-reservation']);
 }
 
 profile(): void{
@@ -29,12 +29,13 @@ profile(): void{
 }
 
 signOut(): void{
-// this.authenticationService.signOut().subscribe(
+  localStorage.removeItem('user');
+//   this.authenticationService.signOut().subscribe(
 //         result => {
 //             localStorage.removeItem('user');
 //             this.router.navigate(['/login']);
 //         }
 //     );
+// }
 }
-
 }

@@ -29,4 +29,14 @@ public class RegisteredUserService {
 	public RegisteredUser findOne(Long id) {
 		return repository.findByIdAndActive(id, true).orElse(null);
 	}
+
+	public RegisteredUser findByEmail(String username) {
+		// TODO Auto-generated method stub
+		return repository.findByEmail(username);
+	}
+
+	public void save(RegisteredUser registeredUser) {
+		repository.save(registeredUser);
+		
+	}
 }

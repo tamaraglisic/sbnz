@@ -34,6 +34,14 @@ public class TicketUser {
 	public TicketUser() {
 		super();
 	}
+	
+
+	public TicketUser(String userType, int counts, double singleTicketPrice) {
+		super();
+		this.userType = userType;
+		this.counts = counts;
+		this.singleTicketPrice = singleTicketPrice;
+	}
 
 	public TicketUser(Long id, String userType, int count, double singleTicketPrice) {
 		super();

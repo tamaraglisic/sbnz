@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 
 @Component({
@@ -20,6 +21,7 @@ export class LoginPageComponent implements OnInit {
       private route: ActivatedRoute,
       private router: Router,
       private authenticationService: AuthenticationService,
+      private toastr: ToastrService
 
   ) {
       // redirect to home if already logged in
@@ -42,16 +44,32 @@ export class LoginPageComponent implements OnInit {
   get f() { return this.loginForm.controls; }
 
   onSubmit() {
-      this.submitted = true;
-      console.log(this.loginForm.value['username']);
+    this.submitted = true;
+    console.log(this.loginForm.value['username']);
 
 
       // stop here if form is invalid
-      if (this.loginForm.invalid) {
-          return;
-      }
+    if (this.loginForm.invalid) {
+        return;
+    }
 
-      this.loading = true;
+    this.loading = true;
+
+    const auth: any = {};
+    auth.username = this.loginForm.value.username;
+    auth.password = this.loginForm.value.password;
+
+    this.authenticationService.login(auth).subscribe(
+        result => {
+            this.toastr.success('Successful login!');
+            localStorage.setItem('user', JSON.stringify(result));
+            this.router.navigate(['/']);
+        },
+        error => {
+            console.log(error);
+            this.toastr.error('Wrong password or username');
+        }
+    );
       
   }
 

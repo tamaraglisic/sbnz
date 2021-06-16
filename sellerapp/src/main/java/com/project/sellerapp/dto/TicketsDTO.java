@@ -2,9 +2,12 @@ package com.project.sellerapp.dto;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.project.sellerapp.helpers.Utility;
+import com.project.sellerapp.model.TicketUser;
+import com.project.sellerapp.model.Tickets;
 
 public class TicketsDTO {
 
@@ -54,6 +57,22 @@ public class TicketsDTO {
 		this.initialPrice = initialPrice;
 		this.ticketUsers = ticketUsers;
 		this.bill = bill;
+	}
+
+	public TicketsDTO(Tickets t) {
+		this.id = t.getId();
+		this.skiResort = new SkiResortDTO(t.getSkiResort());
+		this.typeTicket = t.getTypeTicket();
+		this.usingPeriod = t.getUsingPeriod();
+		this.transportType = t.getTransportType();
+		this.usingStart = t.getUsingStart();
+		this.usingEnd = t.getUsingEnd();
+		this.initialPrice = t.getInitialPrice();
+		this.ticketUsers = new HashSet<>();
+		for(TicketUser tu : t.getTicketUsers()) {
+			this.ticketUsers.add(new TicketUserDTO(tu));
+		}
+		this.bill = t.getBill();
 	}
 
 	public Long getId() {

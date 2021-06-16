@@ -2,7 +2,9 @@ package com.project.sellerapp.service;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -11,11 +13,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.project.sellerapp.dto.TicketUserDTO;
 import com.project.sellerapp.dto.TicketsDTO;
 import com.project.sellerapp.model.SkiResort;
 import com.project.sellerapp.model.TicketUser;
 import com.project.sellerapp.model.Tickets;
 import com.project.sellerapp.repository.SkiResortRepository;
+import com.project.sellerapp.repository.TicketUsersRepository;
 import com.project.sellerapp.repository.TicketsRepository;
 
 @Service
@@ -28,6 +32,8 @@ public class TicketsService {
 	private TicketsRepository ticketsRepository;
 	@Autowired
 	private SkiResortRepository skiResortRepository;
+	@Autowired
+	private TicketUsersRepository ticketUsersRepository;
 
 	@Autowired
 	public TicketsService(KieContainer kieContainer) {
@@ -106,6 +112,33 @@ public class TicketsService {
 		List<Tickets> tickets = ticketsRepository.findByDate(skiResortId, forDate);
 		return tickets;
 	}
+
+	public Tickets create(TicketsDTO tickets) {
+		Tickets t = new Tickets();
+
+		SkiResort resort = skiResortRepository.findById(tickets.getSkiResort().getId()).orElse(null);
+		t.setSkiResort(resort);
+		t.setTypeTicket(tickets.getTypeTicket());
+		t.setUsingPeriod(tickets.getUsingPeriod());
+		t.setTransportType(tickets.getTransportType());
+		t.setUsingStart(tickets.getUsingStart());
+		t.setUsingEnd(tickets.getUsingEnd());
+		t.setInitialPrice(tickets.getInitialPrice());
+		Set<TicketUser> ticketUser = new HashSet<>();
+		for(TicketUserDTO tu: tickets.getTicketUsers()) {
+			TicketUser tentity = new TicketUser(tu.getUserType(), tu.getCount(), tu.getSingleTicketPrice());
+			ticketUser.add(tentity);
+		}
+		t.setTicketUsers(ticketUser);
+		t.setBill(tickets.getBill());
+		t = ticketsRepository.save(t);
+		return t;
+	}
+	
+//	public List<Tickets> findMyTickets(Long id){
+//		List<Tickets> retVal = ticketsRepository.findByRegisteredUserId(id);
+//		return retVal;
+//	}
 	
 //	public double calculateBill(TicketsDTO tickets) {
 //		double bill = 0;
