@@ -6,6 +6,43 @@ import com.project.sellerapp.dto.TicketUserDTO
 import com.project.sellerapp.helpers.Utility
 import java.util.ArrayList;
 
+
+rule "Price for lift transport"
+	agenda-group "transport_type"
+	lock-on-active true
+    when
+        $t: TicketsDTO(transportType == "LIFT", $users: ticketUsers, $resort: skiResort)
+        $u: TicketUserDTO(userType == "ODRASLI" || userType== "DECA" || userType=="SENIOR") from $users
+    then
+    	System.out.println("lift transport" );
+        $u.setSingleTicketPrice($resort.getLiftPrice());
+       
+end
+
+rule "Price for gondola transport"
+	agenda-group "transport_type"
+	lock-on-active true
+    when
+        $t: TicketsDTO(transportType == "GONDOLA", $users: ticketUsers, $resort: skiResort)
+        $u: TicketUserDTO(userType == "ODRASLI" || userType== "DECA" || userType=="SENIOR") from $users
+    then
+    	System.out.println("lift transport" );
+        $u.setSingleTicketPrice($resort.getGondolaPrice());
+       
+end
+
+rule "Price for gondola+lift transport"
+	agenda-group "transport_type"
+	lock-on-active true
+    when
+        $t: TicketsDTO(transportType == "LIFT+GONDOLA", $users: ticketUsers, $resort: skiResort)
+        $u: TicketUserDTO(userType == "ODRASLI" || userType== "DECA" || userType=="SENIOR") from $users
+    then
+    	System.out.println("lift transport" );
+        $u.setSingleTicketPrice(($resort.getGondolaPrice()/2)+$resort.getLiftPrice());
+       
+end
+
 rule "Discount for half-day ticket"
 	agenda-group "using_period"
 	lock-on-active true

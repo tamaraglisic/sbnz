@@ -1,5 +1,6 @@
 package com.project.sellerapp.service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -11,13 +12,17 @@ import org.kie.api.runtime.KieSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.project.sellerapp.dto.TicketUserDTO;
 import com.project.sellerapp.dto.TicketsDTO;
+import com.project.sellerapp.model.RegisteredUser;
 import com.project.sellerapp.model.SkiResort;
 import com.project.sellerapp.model.TicketUser;
 import com.project.sellerapp.model.Tickets;
+import com.project.sellerapp.model.User;
 import com.project.sellerapp.repository.SkiResortRepository;
 import com.project.sellerapp.repository.TicketUsersRepository;
 import com.project.sellerapp.repository.TicketsRepository;
@@ -35,6 +40,9 @@ public class TicketsService {
 	@Autowired
 	private TicketUsersRepository ticketUsersRepository;
 
+	@Autowired
+	private RegisteredUserService registeredUserService;
+	
 	@Autowired
 	public TicketsService(KieContainer kieContainer) {
 		log.info("Initialising a new example session.");
@@ -75,17 +83,47 @@ public class TicketsService {
 		kieSession.insert(tickets);
 		kieSession.fireAllRules();
 		
-		if(tickets.isRegularGuest())
-		{
-			Calendar cal = Calendar.getInstance(); 
-			cal.setTime(tickets.getUsingEnd()); 
-			cal.add(Calendar.DATE, 1);
-			Date nextDay = cal.getTime();
-			double occupacy = calculateOccupacy(nextDay, tickets.getSkiResort().getId());
-			tickets.getSkiResort().setOccupacyForDay(nextDay);
-			tickets.getSkiResort().setOccupacyRate(occupacy);
-		}
+		// preuzimanje usera is konteksta
+		RegisteredUser registeredUser;
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = ((User) currentUser.getPrincipal()).getEmail();
+        registeredUser = registeredUserService.findByEmail(username);
+        
+		kieSession.getAgenda().getAgendaGroup("regular_guest").setFocus();
+		kieSession.insert(registeredUser);
+		kieSession.insert(tickets);
+		kieSession.fireAllRules();
 		
+		kieSession.getAgenda().getAgendaGroup("occupancy_rate").setFocus();
+		kieSession.insert(tickets.getSkiResort());
+		Calendar cal = Calendar.getInstance(); 
+		cal.setTime(tickets.getUsingEnd()); 
+		cal.add(Calendar.DATE, 1);
+		Date nextDay = cal.getTime();
+		
+		List<TicketsDTO> res = toDtoList(findTicketsByDate(nextDay, tickets.getSkiResort().getId()));
+		kieSession.insert(res);
+		//res.forEach(kieSession::insert);
+		kieSession.fireAllRules();
+		System.out.println(tickets.getSkiResort().getOccupacyRate());
+//		
+//		if(tickets.isRegularGuest())
+//		{
+//			kieSession.getAgenda().getAgendaGroup("regular_guest").setFocus();
+//			Calendar cal = Calendar.getInstance(); 
+//			cal.setTime(tickets.getUsingEnd()); 
+//			cal.add(Calendar.DATE, 1);
+//			Date nextDay = cal.getTime();
+//			List<Tickets> res = findTicketsByDate(nextDay, tickets.getSkiResort().getId());
+//			res.forEach(kieSession::insert);
+//			kieSession.fireAllRules();
+//			/*
+//			double occupacy = calculateOccupacy(nextDay, tickets.getSkiResort().getId());
+//			tickets.getSkiResort().setOccupacyForDay(nextDay);
+//			tickets.getSkiResort().setOccupacyRate(occupacy);
+//			*/
+//		}
+//		
 		kieSession.dispose();
 		
 		//tickets.setBill(calculateBill(tickets));
@@ -93,6 +131,14 @@ public class TicketsService {
 		
 		return tickets.getBill();
 		
+	}
+	private List<TicketsDTO> toDtoList(List<Tickets> list){
+		List<TicketsDTO> retVal = new ArrayList<TicketsDTO>();
+		for(Tickets t: list) {
+			TicketsDTO dto = new TicketsDTO(t);
+			retVal.add(dto);
+		}
+		return retVal;
 	}
 	
 	public double calculateOccupacy(Date forDate, Long skiResortId) {

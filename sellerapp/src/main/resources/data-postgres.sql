@@ -15,11 +15,16 @@ insert into ski_resort (name, description, country, lift_price, gondola_price, s
 
 insert into ticket_user (user_type, counts, single_ticket_price) values ('ODRASLI', 2, 100);
 insert into ticket_user (user_type, counts, single_ticket_price) values ('DECA', 2, 100);
-insert into ticket_user (user_type) values ('SENIOR');
+insert into ticket_user (user_type, counts, single_ticket_price) values ('SENIOR', 900, 100);
 
 insert into tickets (bill, initial_price, transport_type, type_ticket, using_start, using_end, using_period, ski_resort_id) values (12364,200, 'ZICARA', 'PORODICNA', '2021-05-25 22:24:52', '2021-05-30 22:24:52', 'DNEVNA', 1);
+insert into tickets (bill, initial_price, transport_type, type_ticket, using_start, using_end, using_period, ski_resort_id) values (12364,200, 'ZICARA', 'PORODICNA', '2021-05-25 22:24:52', '2021-05-30 22:24:52', 'DNEVNA', 1);
+
 
 insert into tickets_ticket_users(tickets_id, ticket_users_id) values(1,1);
 insert into tickets_ticket_users(tickets_id, ticket_users_id) values(1,2);
+insert into tickets_ticket_users(tickets_id, ticket_users_id) values(2,3);
+
 
 insert into users_tickets(registered_user_id, tickets_id) values (2, 1);
+insert into users_tickets(registered_user_id, tickets_id) values (2, 2);

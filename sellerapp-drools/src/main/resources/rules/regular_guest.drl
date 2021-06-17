@@ -23,15 +23,40 @@ rule "Regular Guest"
         	SkiResortDTO($s: this, $id == $s.getId()) from $resorts,
         	count($s)
         )
-        //Number($value: intValue >= 3) from accumulate(
-       // 	TicketsDTO($t: this, $datum: usingStart, $datum > Utility.minusMonths(new Date(), 36) && $id == skiResort.getId()) from $ts,
-       // 	count($t)
-       // )
+       
       
        eval($value >= 3 && $rezervacije.size()>=3)
     then
     	$reservation.addPrivilege("REGULAR_GUEST");
     	System.out.println("Stalni posetilac" );
+end
+/* OVO pravilo pravi problem testovima
+rule "One day more"
+	agenda-group "regular_guest"
+	lock-on-active true
+	salience -1
+    when
+        $reservation: TicketsDTO()
+        
+       eval($reservation.getSkiResort().getOccupacyRate() <= 60 && $reservation.isRegularGuest())
+    then
+    	$reservation.incrementUsingEnd();
+    	System.out.println("Produzena karta");
+end
+*/
+rule "Occupancy rate"
+	agenda-group "occupancy_rate"
+	lock-on-active true
+    when
+    	$l: List()
+       	$r: SkiResortDTO($capacity: capacity)
+      
+         Number( $total: intValue ) from accumulate(
+      		TicketsDTO($tick: this, $c: this.getNumberOfUsers()) from $l,         	
+         	sum($c)
+    	)
 
-       
+    then
+    	$r.setOccupacyRate(100*$total/$capacity);
+    	System.out.println("Occupancy rate");      
 end

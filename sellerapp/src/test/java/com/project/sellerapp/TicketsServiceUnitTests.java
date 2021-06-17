@@ -508,6 +508,7 @@ public class TicketsServiceUnitTests {
 		RegisteredUserDTO regUser =  new RegisteredUserDTO();
 		Set<TicketsDTO> userTickets = new HashSet<>();
 		SkiResortDTO resort = new SkiResortDTO(1L, "Kopaonik");
+		resort.setOccupacyRate(55);
 		// jedna kaarta
 		TicketsDTO t = new TicketsDTO();
 		t.setSkiResort(resort);
@@ -560,8 +561,8 @@ public class TicketsServiceUnitTests {
     	t3.setTypeTicket("PORODICNA");
     	t3.setUsingPeriod("DNEVNA");
   
-    	String inputString13 = "25 05 2019";
-		String inputString23 = "28 05 2019";
+    	String inputString13 = "25 05 2021";
+		String inputString23 = "28 05 2021";
 		try {
 			Date date1 = myFormat.parse(inputString13);
 		    Date date2 = myFormat.parse(inputString23);
@@ -590,4 +591,6 @@ public class TicketsServiceUnitTests {
 		
 		kieSession.dispose();
 	}
+	
+
 }
