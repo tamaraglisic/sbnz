@@ -29,13 +29,11 @@ profile(): void{
 }
 
 signOut(): void{
-  localStorage.removeItem('user');
-//   this.authenticationService.signOut().subscribe(
-//         result => {
-//             localStorage.removeItem('user');
-//             this.router.navigate(['/login']);
-//         }
-//     );
-// }
+  this.authenticationService.signOut().subscribe(
+    result => {
+        localStorage.removeItem('user');
+        this.router.navigate(['/login']);
+    }
+);
 }
 }

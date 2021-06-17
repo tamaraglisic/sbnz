@@ -19,11 +19,16 @@ export class AuthenticationService {
 	}
 
 	isLoggedIn(): boolean {
-		if (!localStorage.getItem('accessToken')) {
+
+		if (!localStorage.getItem('user')) {
 			return false;
 		}
 		return true;
 	}
+	signOut(): Observable<any> {
+        return this.http.get(`${environment.baseUrl}/${environment.signOut}`, {headers: this.headers});
+
+    }
 
 
 }

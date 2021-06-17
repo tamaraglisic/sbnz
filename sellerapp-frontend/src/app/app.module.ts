@@ -19,6 +19,7 @@ import { ResortCapacityComponent } from './pages/resort/resort-capacity/resort-c
 import { ConfirmationComponent } from './pages/shared/confirmation/confirmation.component';
 import { SharedModule } from './pages/shared/shared-module';
 import { ToastrModule } from 'ngx-toastr';
+import { NavbarNonAuthComponent } from './navbar/navbar-non-auth/navbar-non-auth.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ToastrModule } from 'ngx-toastr';
     NavbarAdminComponent,
     NavbarRegisteredUserComponent,
     NavbarInstructorComponent,
+    NavbarNonAuthComponent,
   ],
   imports: [
     BrowserModule,

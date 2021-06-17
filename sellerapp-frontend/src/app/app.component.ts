@@ -16,7 +16,7 @@ export class AppComponent {
 
   checkRole() {
 	const item = localStorage.getItem('user');
-
+  console.log(item);
 	if (!item) {
 		this.role = undefined;
 		return;
@@ -24,6 +24,7 @@ export class AppComponent {
 
 	const jwt: JwtHelperService = new JwtHelperService();
 	this.role = jwt.decodeToken(item).role;
+  console.log(this.role);
   }
 
 }

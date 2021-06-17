@@ -63,12 +63,13 @@ export class LoginPageComponent implements OnInit {
         result => {
             this.toastr.success('Successful login!');
             localStorage.setItem('user', JSON.stringify(result));
-            this.router.navigate(['/']);
+            this.router.navigate(['/ski-resorts']);
         },
         error => {
             console.log(error);
             this.toastr.error('Wrong password or username');
         }
+        
     );
       
   }

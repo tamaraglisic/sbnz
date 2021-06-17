@@ -24,7 +24,7 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
-    <mat-radio-group aria-label="Ticket using period"  formControlName="usingPeriod">
+    <mat-radio-group aria-label="Ticket using period"  formControlName="usingPeriod" *ngIf="ticketForm.value.transportType === 'LIFT' || ticketForm.value.transportType === 'LIFT+GONDOLA'">
         <mat-radio-button style="margin-left: 10px;" value="DNEVNA">Day</mat-radio-button>
         <mat-radio-button style="margin-left: 10px;" value="POLUDNEVNA">Half-day</mat-radio-button>
         <mat-radio-button style="margin-left: 10px;" value="NOCNA">Night</mat-radio-button>

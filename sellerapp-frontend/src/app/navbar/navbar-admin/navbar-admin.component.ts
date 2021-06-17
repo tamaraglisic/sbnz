@@ -36,11 +36,11 @@ export class NavbarAdminComponent implements OnInit {
   }
 
   signOut(): void{
-    // this.authenticationService.signOut().subscribe(
-    //         result => {
-    //             localStorage.removeItem('user');
-    //             this.router.navigate(['/login']);
-    //         }
-    //     );
+    this.authenticationService.signOut().subscribe(
+      result => {
+          localStorage.removeItem('user');
+          this.router.navigate(['/login']);
+      }
+  );
   }
 }

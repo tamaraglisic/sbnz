@@ -46,6 +46,10 @@ public class TicketsService {
 		System.out.println(new Date());
 		KieSession kieSession = kieContainer.newKieSession("test-session");
 		
+		kieSession.getAgenda().getAgendaGroup("transport_type").setFocus();
+		kieSession.insert(tickets);
+		kieSession.fireAllRules();
+		
 		kieSession.getAgenda().getAgendaGroup("using_period").setFocus();
 		kieSession.insert(tickets);
 		kieSession.fireAllRules();
