@@ -6,6 +6,7 @@ import { ResortChooserComponent } from '../pages/resort/resort-chooser/resort-ch
 import { MyReservationsComponent } from '../pages/reservations/my-reservations/my-reservations.component';
 import { ResortCapacityComponent } from '../pages/resort/resort-capacity/resort-capacity.component';
 import { NewReservationComponent } from '../pages/reservations/new-reservation/new-reservation.component';
+import { AllResortsComponent } from '../pages/resort/all-resorts/all-resorts.component';
 
 export const routes :Routes = [
 	// {
@@ -40,5 +41,10 @@ export const routes :Routes = [
 		path:'new-reservation',
 		component: NewReservationComponent,
 		canActivate: [LoginGuard]
+	},
+	{
+		path:'ski-resorts',
+		component: AllResortsComponent,
+		//canActivate: [LoginGuard]
 	}
 ];

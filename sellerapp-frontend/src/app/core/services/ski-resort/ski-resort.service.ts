@@ -38,4 +38,28 @@ export class SkiResortService {
 		return this.http.get(`${environment.baseUrl}/${environment.skiResort}/occupancy/`+id,  queryParams).pipe(map(res => res));
 	}
 
+	getOne(id: any): Observable<any> {
+
+		let queryParams = {};
+        queryParams = {
+            headers: this.headers,
+            observe: 'response',
+            params: new HttpParams()
+        };
+		return this.http.get(`${environment.baseUrl}/${environment.skiResort}/`+id,  queryParams).pipe(map(res => res));
+
+	}
+
+	edit(resort: any){
+        return this.http.put(`${environment.baseUrl}/${environment.skiResort}`, resort, {headers: this.headers, responseType: 'json'});
+
+	}
+	delete(id: any){
+        return this.http.put(`${environment.baseUrl}/${environment.skiResort}/delete/${id}`, {headers: this.headers, responseType: 'text'});
+
+	}
+	addNew(resort: any){
+		return this.http.post(`${environment.baseUrl}/${environment.skiResort}`, resort, {headers: this.headers, responseType: 'json'});
+	}
+
 }

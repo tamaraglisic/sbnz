@@ -3,6 +3,7 @@ import {MatDialog} from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
+import { NewResortComponent } from 'src/app/pages/resort/new-resort/new-resort.component';
 
 @Component({
   selector: 'app-navbar-admin',
@@ -28,6 +29,10 @@ export class NavbarAdminComponent implements OnInit {
 
   newSkiResort(): void{
     console.log("adding new ski resort")
+    const dialogRef = this.dialog.open(NewResortComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 
   signOut(): void{

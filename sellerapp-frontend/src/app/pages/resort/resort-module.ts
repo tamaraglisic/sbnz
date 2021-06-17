@@ -3,12 +3,15 @@ import { MaterialModule } from '../material-module';
 import { ResortCapacityComponent } from './resort-capacity/resort-capacity.component';
 import { ResortChooserComponent } from './resort-chooser/resort-chooser.component';
 import { ChartsModule } from 'ng2-charts';
+import { AllResortsComponent } from './all-resorts/all-resorts.component';
+import { NewResortComponent } from './new-resort/new-resort.component';
+import { EditResortComponent } from './edit-resort/edit-resort.component';
 
 
 @NgModule({
-  declarations: [ResortChooserComponent, ResortCapacityComponent],
+  declarations: [ResortChooserComponent, ResortCapacityComponent, AllResortsComponent, EditResortComponent, NewResortComponent],
   imports: [ MaterialModule, ChartsModule],
-  exports: [ResortChooserComponent, ResortCapacityComponent],
+  exports: [ResortChooserComponent, ResortCapacityComponent, AllResortsComponent, EditResortComponent, NewResortComponent],
   providers: []
 })
 

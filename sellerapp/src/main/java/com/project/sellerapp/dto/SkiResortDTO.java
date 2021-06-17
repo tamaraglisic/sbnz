@@ -18,6 +18,7 @@ public class SkiResortDTO {
 	private int groupCount;
 	private double ticketDeposit;
 	private double capacity;
+	private boolean active;
 	
 	private Date occupacyForDay;
 	private double occupacyRate;
@@ -38,6 +39,7 @@ public class SkiResortDTO {
 		this.groupCount = ski.getGroupCount();
 		this.ticketDeposit = ski.getTicketDeposit();
 		this.capacity = ski.getCapacity();
+		this.active = ski.isActive();
 	}
 
 	public SkiResortDTO(Long id, String name) {
@@ -81,6 +83,25 @@ public class SkiResortDTO {
 		this.occupacyRate = occupacyRate;
 	}
 
+	public SkiResortDTO(Long id, String name, String description, String country, double liftPrice, double gondolaPrice,
+			Date seasonStarts, Date seasonEnds, int groupCount, double ticketDeposit, double capacity, boolean active,
+			Date occupacyForDay, double occupacyRate) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.country = country;
+		this.liftPrice = liftPrice;
+		this.gondolaPrice = gondolaPrice;
+		this.seasonStarts = seasonStarts;
+		this.seasonEnds = seasonEnds;
+		this.groupCount = groupCount;
+		this.ticketDeposit = ticketDeposit;
+		this.capacity = capacity;
+		this.active = active;
+		this.occupacyForDay = occupacyForDay;
+		this.occupacyRate = occupacyRate;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -183,6 +204,12 @@ public class SkiResortDTO {
 
 	public void setOccupacyRate(double occupacyRate) {
 		this.occupacyRate = occupacyRate;
+	}
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 	

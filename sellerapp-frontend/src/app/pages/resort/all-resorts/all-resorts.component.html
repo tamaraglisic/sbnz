@@ -1,0 +1,37 @@
+<div style="margin-left: 20px;">
+    <br>
+    <br>
+    <br>
+    <table class="styled-table">
+        <thead>
+        <tr>         
+         
+            <th>Name</th>
+            <th>Country</th>
+            <th>Season starts</th>
+            <th>Season ends</th>
+            <th>Capacity</th>
+            <th>Edit resort</th>
+            <th>Delete resort</th>
+        
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let res of resorts">
+            <td>{{res.name}}</td>
+            <td>{{res.country}}</td>
+            <td>{{res.seasonStarts | date}}</td>
+            <td>{{res.seasonEnds | date}}</td>
+            <td>{{res.capacity}}</td>
+            <td>
+                <button mat-button color="primary" (click)="edit(res.id)">Edit</button>
+            </td>
+            <td>
+                <button mat-button color="primary" (click)="delete(res.id)">Delete</button>
+            </td>
+            </tr>
+    </tbody>
+
+    </table>
+    
+</div>

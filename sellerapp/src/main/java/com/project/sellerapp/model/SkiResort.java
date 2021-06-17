@@ -47,6 +47,8 @@ public class SkiResort {
 	@Column(unique = false, nullable = false)
 	private double capacity;
 	
+	@Column(unique = false, nullable = false)
+	private boolean active;
 	
 
 	public SkiResort() {
@@ -55,13 +57,21 @@ public class SkiResort {
 
 
 	public SkiResort(SkiResortDTO sr) {
-		super();
 		
+		this.id = sr.getId();
+		this.name = sr.getName();
+		this.description = sr.getDescription();
+		this.country = sr.getCountry();
+		this.liftPrice = sr.getLiftPrice();
+		this.gondolaPrice = sr.getGondolaPrice();
+		this.seasonStarts = sr.getSeasonStarts();
+		this.seasonEnds = sr.getSeasonEnds();
+		this.groupCount = sr.getGroupCount();
+		this.ticketDeposit = sr.getTicketDeposit();
+		this.capacity = sr.getCapacity();
+		this.active = sr.isActive();
 		
 	}
-
-
-
 
 	public SkiResort(Long id, String name, String description, String country, double liftPrice, double gondolaPrice,
 			Date seasonStarts, Date seasonEnds, int groupCount, double ticketDeposit, double capacity) {
@@ -77,6 +87,24 @@ public class SkiResort {
 		this.groupCount = groupCount;
 		this.ticketDeposit = ticketDeposit;
 		this.capacity = capacity;
+	}
+
+
+	public SkiResort(Long id, String name, String description, String country, double liftPrice, double gondolaPrice,
+			Date seasonStarts, Date seasonEnds, int groupCount, double ticketDeposit, double capacity, boolean active) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.country = country;
+		this.liftPrice = liftPrice;
+		this.gondolaPrice = gondolaPrice;
+		this.seasonStarts = seasonStarts;
+		this.seasonEnds = seasonEnds;
+		this.groupCount = groupCount;
+		this.ticketDeposit = ticketDeposit;
+		this.capacity = capacity;
+		this.active = active;
 	}
 
 
@@ -187,6 +215,16 @@ public class SkiResort {
 
 	public void setCapacity(double capacity) {
 		this.capacity = capacity;
+	}
+
+
+	public boolean isActive() {
+		return active;
+	}
+
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 	

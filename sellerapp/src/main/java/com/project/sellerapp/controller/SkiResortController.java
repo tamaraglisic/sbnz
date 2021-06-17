@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,14 +36,23 @@ public class SkiResortController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	@PreAuthorize("hasRole('REGISTERED_USER')")
+	@PreAuthorize("hasAnyRole('REGISTERED_USER', 'ROLE_ADMIN')")
 	public ResponseEntity<List<SkiResortDTO>> getAllResorts(){
 		List<SkiResort> resorts = skiResortService.findAll();
 		return new ResponseEntity<>(toDTOList(resorts), HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/{id}" , method = RequestMethod.GET)
+	@PreAuthorize("hasAnyRole('REGISTERED_USER', 'ROLE_ADMIN')")
+	public ResponseEntity<SkiResortDTO> getResort(@PathVariable Long id){
+		SkiResort resort = skiResortService.findById(id);
+		if(resort == null)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(new SkiResortDTO(resort), HttpStatus.OK);
+	}
+	
 	@RequestMapping(value="/occupancy/{id}", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('REGISTERED_USER')")
+	@PreAuthorize("hasAnyRole('REGISTERED_USER', 'ROLE_ADMIN')")
 	public ResponseEntity<List<Occupancy>> getOccupancyForDays(@PathVariable Long id){
 		List<Occupancy> retVal = new ArrayList<Occupancy>();
 		Date forDay = new Date();
@@ -56,6 +66,32 @@ public class SkiResortController {
 		return new ResponseEntity<>(retVal, HttpStatus.OK);
 	}
 	
+	@RequestMapping(method = RequestMethod.POST)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<SkiResortDTO> addNew(@RequestBody SkiResortDTO resort){
+		SkiResort created = skiResortService.create(resort);
+		if(created == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(new SkiResortDTO(created), HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<SkiResortDTO> editResort(@RequestBody SkiResortDTO resort){
+		SkiResort created = skiResortService.update(resort);
+		if(created == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(new SkiResortDTO(created), HttpStatus.OK);
+	}
+	@RequestMapping(value="/delete/{id}", method = RequestMethod.PUT)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<SkiResortDTO> deleteResort(@PathVariable Long id){
+		
+		SkiResort created = skiResortService.delete(id);
+		return new ResponseEntity<>(new SkiResortDTO(created), HttpStatus.OK);
+	}
 	private List<SkiResortDTO> toDTOList(List<SkiResort> list){
 		List<SkiResortDTO> retVal = new ArrayList<SkiResortDTO>();
 		for(SkiResort ski: list) {

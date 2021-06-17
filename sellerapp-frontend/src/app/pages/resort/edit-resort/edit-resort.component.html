@@ -1,0 +1,93 @@
+<mat-spinner *ngIf="loading"></mat-spinner>
+<form class="reactiveForm" [formGroup]="form"  class="form-inline my-2 my-lg-0" *ngIf="!loading">
+    <div class="example-container">
+         
+        <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name"  required>
+            <mat-error *ngIf="form.controls.name.touched && form.controls.name.invalid">
+                <span *ngIf="form.controls.name.errors?.required">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <br>
+        
+        <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description"  required maxlength="100">
+            </textarea>
+            <mat-error *ngIf="form.controls.description.touched && form.controls.description.invalid">
+                <span *ngIf="form.controls.description.errors?.required">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Country</mat-label>
+            <input matInput formControlName="country"  required>
+            <mat-error *ngIf="form.controls.name.touched && form.controls.name.invalid">
+                <span *ngIf="form.controls.name.errors?.required">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Lift price</mat-label>
+            <input type="number" step="100" matInput formControlName="liftPrice" required min="0">
+            <mat-error *ngIf="form.controls.description.touched && form.controls.description.invalid">
+                <span *ngIf="form.controls.description.errors?.required">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Gondola price</mat-label>
+            <input type="number" step="100" matInput formControlName="gondolaPrice" required min="0">
+            <mat-error *ngIf="form.controls.description.touched && form.controls.description.invalid">
+                <span *ngIf="form.controls.description.errors?.required">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Season starts</mat-label>
+            <input matInput [matDatepicker]="picker"  formControlName="seasonStarts">
+            <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Season ends</mat-label>
+            <input matInput [matDatepicker]="picker1" formControlName="seasonEnds">
+            <mat-datepicker-toggle matSuffix [for]="picker1" ></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Group count</mat-label>
+            <input type="number" step="1" matInput formControlName="groupCount" required min="0" max="50">
+            <mat-error *ngIf="form.controls.description.touched && form.controls.description.invalid">
+                <span *ngIf="form.controls.description.errors?.required">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Ticket deposit</mat-label>
+            <input type="number" step="100" matInput formControlName="ticketDeposit" required min="0">
+            <mat-error *ngIf="form.controls.description.touched && form.controls.description.invalid">
+                <span *ngIf="form.controls.description.errors?.required">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Capacity</mat-label>
+            <input type="number" step="100" matInput formControlName="capacity" required min="0">
+            <mat-error *ngIf="form.controls.description.touched && form.controls.description.invalid">
+                <span *ngIf="form.controls.description.errors?.required">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <br>
+       
+        <br>
+        <mat-dialog-actions align="end">
+            <button mat-raised-button (click)="cancel()">Cancel</button>
+            <button type="submit" mat-raised-button color="success" id="saveEditCulturalOffer"(click)="saveChanges()">Save</button>
+        </mat-dialog-actions>
+    
+    </div>
+</form>

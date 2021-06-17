@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.project.sellerapp.dto.SkiResortDTO;
 import com.project.sellerapp.model.SkiResort;
 import com.project.sellerapp.model.TicketUser;
 import com.project.sellerapp.model.Tickets;
@@ -22,7 +23,7 @@ public class SkiResortService {
 	private TicketsRepository ticketsRepository;
 	
 	public List<SkiResort> findAll(){
-		return repository.findAll();
+		return repository.findByActive(true);
 	}
 	
 	public SkiResort findById(Long id) {
@@ -50,5 +51,64 @@ public class SkiResortService {
 	{
 		List<Tickets> tickets = ticketsRepository.findByDate(skiResortId, forDate);
 		return tickets;
+	}
+
+	public SkiResort create(SkiResortDTO resort) {
+		// TODO Auto-generated method stub
+		SkiResort sr = new SkiResort();
+
+		sr.setName(resort.getName());
+		sr.setDescription(resort.getDescription());
+		sr.setCountry(resort.getCountry());
+		sr.setLiftPrice(resort.getLiftPrice());
+		sr.setGondolaPrice(resort.getGondolaPrice());
+		sr.setSeasonStarts(resort.getSeasonStarts());
+		sr.setSeasonEnds(resort.getSeasonStarts());
+		sr.setGroupCount(resort.getGroupCount());
+		sr.setTicketDeposit(resort.getTicketDeposit());
+		sr.setCapacity(resort.getCapacity());
+		sr.setActive(true);
+		try {
+			sr = repository.save(sr);
+		}
+		catch(Exception e){
+			return null;
+		}
+		
+		return sr;
+	}
+
+	public SkiResort update(SkiResortDTO resort) {
+		SkiResort sr = repository.findById(resort.getId()).orElse(null);
+		if(sr != null) {
+			sr.setName(resort.getName());
+			sr.setDescription(resort.getDescription());
+			sr.setCountry(resort.getCountry());
+			sr.setLiftPrice(resort.getLiftPrice());
+			sr.setGondolaPrice(resort.getGondolaPrice());
+			sr.setSeasonStarts(resort.getSeasonStarts());
+			sr.setSeasonEnds(resort.getSeasonStarts());
+			sr.setGroupCount(resort.getGroupCount());
+			sr.setTicketDeposit(resort.getTicketDeposit());
+			sr.setCapacity(resort.getCapacity());
+			try {
+				sr = repository.save(sr);
+			}
+			catch(Exception e){
+				return null;
+			}
+			return sr;
+		}
+		return null;
+	}
+
+	public SkiResort delete(Long id) {
+		SkiResort created = repository.findById(id).orElse(null);
+		if(created != null) {
+			created.setActive(false);
+			System.out.println("set to false");
+			return repository.save(created);
+		}
+		return null;
 	}
 }

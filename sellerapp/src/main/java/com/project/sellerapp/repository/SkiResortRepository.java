@@ -15,6 +15,8 @@ public interface SkiResortRepository extends JpaRepository<SkiResort, Long>{
 	List<SkiResort> findAll();
 	
 	Optional<SkiResort> findById(Long id);
+
+	List<SkiResort> findByActive(boolean b);
 	
 	
 }
