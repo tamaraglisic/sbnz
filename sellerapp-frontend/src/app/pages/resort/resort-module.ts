@@ -6,13 +6,14 @@ import { ChartsModule } from 'ng2-charts';
 import { AllResortsComponent } from './all-resorts/all-resorts.component';
 import { NewResortComponent } from './new-resort/new-resort.component';
 import { EditResortComponent } from './edit-resort/edit-resort.component';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
   declarations: [ResortChooserComponent, ResortCapacityComponent, AllResortsComponent, EditResortComponent, NewResortComponent],
   imports: [ MaterialModule, ChartsModule],
   exports: [ResortChooserComponent, ResortCapacityComponent, AllResortsComponent, EditResortComponent, NewResortComponent],
-  providers: []
+  providers: [DatePipe]
 })
 
 export class ResortModule { }

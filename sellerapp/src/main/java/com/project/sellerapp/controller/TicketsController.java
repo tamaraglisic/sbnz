@@ -16,11 +16,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.sellerapp.dto.Occupancy;
 import com.project.sellerapp.dto.TicketsDTO;
 import com.project.sellerapp.model.RegisteredUser;
 import com.project.sellerapp.model.Tickets;
@@ -91,23 +94,37 @@ public class TicketsController {
 		return new ResponseEntity<>(new TicketsDTO(created), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/occupacy", method = RequestMethod.GET)
-	public double calculateOccupacyRate() {
-		SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
-		String inputString2 = "28 05 2021";
+	@RequestMapping(value = "/occupancy/{id}", method = RequestMethod.POST)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<Occupancy> calculateOccupacyRate(@PathVariable Long id, @RequestBody Occupancy o) {
+		
+		
+		SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
+		String inputString2 = o.getForDay();
 		try {
 		    Date date2 = myFormat.parse(inputString2);
 		    Calendar cal = Calendar.getInstance(); 
 			cal.setTime(date2); 
 			cal.add(Calendar.DATE, 1);
 			Date nextDay = cal.getTime();
-			double occupacy = ticketsService.calculateOccupacy(nextDay, 1L);
-			return occupacy;
+			double occupacy = ticketsService.calculateOccupacy(nextDay, id);
+			o.setPercent(occupacy);
+			return new ResponseEntity<>(o, HttpStatus.OK);
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
-		return 0;
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteReservation(@PathVariable Long id){
+		try {
+			ticketsService.delete(id);
+		}catch(Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>("OK", HttpStatus.OK);
 	}
 	
 	private List<TicketsDTO> toDtoList(Set<Tickets> set){

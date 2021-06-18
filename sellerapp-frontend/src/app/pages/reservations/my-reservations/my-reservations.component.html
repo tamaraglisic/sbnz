@@ -18,7 +18,7 @@
     </thead>
     <tbody>
         <tr *ngFor="let res of list">
-            <td>{{res.skiResort.name}}</td>
+            <td>{{res.skiResort?.name}}</td>
             <td>{{res.usingStart | date}}</td>
             <td>{{res.usingEnd | date}}</td>
             <td>{{res.bill}}</td>

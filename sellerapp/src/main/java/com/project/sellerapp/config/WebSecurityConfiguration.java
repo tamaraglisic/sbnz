@@ -66,7 +66,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 // komunikacija izmedju klijenta i servera je stateless posto je u pitanju REST aplikacija
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-
+                
                 // sve neautentifikovane zahteve obradi uniformno i posalji 401 gresku
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
@@ -75,7 +75,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 
                 // umesto anotacija iynad svake metode, moze i ovde da se proveravaju prava pristupa ya odredjeni URL
                 //.antMatchers(HttpMethod.GET, "/api/cultural-content-category").hasRole("ROLE_ADMIN")
-
+                .antMatchers(HttpMethod.DELETE,"/tickets/**").permitAll()
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
                 .anyRequest().authenticated().and()
                 // za development svrhe ukljuci konfiguraciju za CORS iz WebConfig klase
@@ -93,6 +93,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         // TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
         web.ignoring().antMatchers(HttpMethod.POST, "/auth/login");
+        
         web.ignoring().antMatchers(HttpMethod.GET, "/auth/sign-out", "/ski-resort", "/ski-resort/occupancy/**", "/ski-resort/search/**");
        // web.ignoring().antMatchers(HttpMethod.GET, "/api/verification/**");
        // web.ignoring().antMatchers(HttpMethod.GET);

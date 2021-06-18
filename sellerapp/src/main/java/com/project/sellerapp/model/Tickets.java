@@ -26,7 +26,7 @@ public class Tickets {
 	private Long id;
 	
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "ski_resort_id", nullable = true)
 	private SkiResort skiResort;
 

@@ -9,7 +9,24 @@
         </mat-select>
     </mat-form-field>
 </div>
+
+<form  *ngIf="role == 'ROLE_ADMIN'" class="reactiveForm" [formGroup]="form" (ngSubmit)="dateChanged()" style="display: block; width: 200px; height: 80px; margin-left:auto; margin-right:auto;">
+    <div class="example-container" >
+        <mat-form-field appearance="fill">
+            <mat-label>Occupancy for day</mat-label>
+            <input matInput [matDatepicker]="picker"  formControlName="inputDate">
+            <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <br>
+        <mat-dialog-actions align="end">
+            <button type="submit" mat-raised-button color="success" >Get occupancy</button>
+        </mat-dialog-actions>
+</div>
+</form>
 <br>
+<br>
+
 <div style="display: block; width: 500px; height: 400px; margin-left:auto; margin-right:auto;">
     <canvas baseChart
         [datasets]="lineChartData" 

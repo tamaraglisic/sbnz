@@ -112,7 +112,7 @@ export class NewReservationComponent implements OnInit {
         }
         else{
           let message = `Your bill is ` + this.res.bill;
-          if(this.ticketForm.value.usingStart != this.res.usingStart){
+          if(this.ticketForm.value.usingStart.getTime() != this.res.usingStart){
             message +=`
             Congratulations, you get one more day!`;
           }

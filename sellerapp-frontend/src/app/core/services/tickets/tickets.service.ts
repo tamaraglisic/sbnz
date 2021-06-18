@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
 import { Tickets } from '../../model/Tickets';
+import { Occupancy } from '../../model/Occupancy';
 
 
 @Injectable({
@@ -48,6 +49,19 @@ export class TicketsService {
 		return this.http.get(`${environment.baseUrl}/${environment.tickets}/my-tickets`, queryParams).pipe(map(res => res));
 	}
 
+    getOccupancy(id:any, occ: Occupancy):  Observable<any> {
+		let queryParams = {};
+        queryParams = {
+            headers: this.headers,
+            observe: 'response',
+            params: new HttpParams()
+        };
+		return this.http.post(`${environment.baseUrl}/${environment.tickets}/occupancy/`+id, occ, queryParams).pipe(map(res => res));
+	}
+
+    delete(id: number): Observable<any> {
+        return this.http.delete(`${environment.baseUrl}/${environment.tickets}/${id}`, {headers: this.headers, responseType: 'text'});
+    }
 	
 
 }

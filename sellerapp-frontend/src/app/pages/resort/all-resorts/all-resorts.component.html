@@ -1,15 +1,15 @@
-<form class="reactiveForm" [formGroup]="searchForm" (ngSubmit)="search()">
-    <div class="example-container">
+<form class="reactiveForm" [formGroup]="searchForm" (ngSubmit)="search()" style="display: block; width: 200px; height: 80px; margin-left:auto; margin-right:auto;">
+    <div class="example-container" >
     <mat-form-field appearance="fill">
         <mat-label>Search by name</mat-label>
         <input id="searchContent" matInput formControlName="name">
     </mat-form-field>
-    <mat-dialog-actions align="end">
+    <mat-dialog-actions align="center">
         <button id="submitSearch" type="submit" mat-raised-button color="success">Search</button>
     </mat-dialog-actions>
     </div>
 </form>
-
+<br><br>
 
 <div style="margin-left: 20px;">
     <br>

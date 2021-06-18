@@ -192,5 +192,12 @@ public class TicketsService {
 		
 		return t;
 	}
+	public void delete(Long id) {
+		Tickets found = ticketsRepository.findById(id).orElse(null);
+		if(found != null) {
+			ticketsRepository.delete(found);
+		}
+		
+	}
 	
 }

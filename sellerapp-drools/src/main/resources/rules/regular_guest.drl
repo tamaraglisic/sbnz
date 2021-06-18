@@ -42,7 +42,7 @@ rule "Add one day"
         	count($ps)
         )
         
-       eval($Pvalue >= 0 && $resort.getOccupacyRate() <= 60)
+       eval($Pvalue == 1 && $resort.getOccupacyRate() <= 60)
     then
     	$reservation.incrementUsingEnd();
     	System.out.println("Produzena karta");

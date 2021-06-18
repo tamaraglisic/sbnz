@@ -2,6 +2,7 @@ package com.project.sellerapp.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,7 +12,7 @@ import javax.persistence.OneToMany;
 @DiscriminatorValue("registered_user")
 public class RegisteredUser  extends User{
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	private Set<Tickets> tickets;
 
 	public RegisteredUser() {

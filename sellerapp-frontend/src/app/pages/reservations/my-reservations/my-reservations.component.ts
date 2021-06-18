@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { Tickets } from 'src/app/core/model/Tickets';
 import { TicketsService } from 'src/app/core/services/tickets/tickets.service';
+import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirmation/confirmation.component';
 
 @Component({
   selector: 'app-my-reservations',
@@ -10,8 +13,11 @@ import { TicketsService } from 'src/app/core/services/tickets/tickets.service';
 export class MyReservationsComponent implements OnInit {
 
   list: Array<Tickets> = [];
+  result: any;
 
   constructor(
+    public dialog: MatDialog,
+    private toastr: ToastrService,
     private ticketsService: TicketsService
   ) { }
 
@@ -25,7 +31,29 @@ export class MyReservationsComponent implements OnInit {
   }
 
   cancelReservation(id:any): void{
-    console.log(id);
+
+    const message = `Are you sure you want to cancel reservation?`
+    const dialogData = new ConfirmDialogModel('Confirm Action', message);
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+        maxWidth: '400px',
+        data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+        if (this.result === true){
+          this.ticketsService.delete(id).subscribe(
+            result => {
+              this.toastr.success('Reservetaion successfully canceld.');
+              window.location.reload();
+            }, error => {
+              this.toastr.error('Cannot cancel reservation');
+      
+            }
+          );
+          }
+      })
+    
   }
   archive(): void{
 
@@ -38,7 +66,7 @@ export class MyReservationsComponent implements OnInit {
   compareDates(startDate: any): boolean{
     let currentDate = new Date();
 
-   return startDate-currentDate.getTime() > 432000000;
+   return startDate-currentDate.getTime() > 172800000;
   }
 
 }
