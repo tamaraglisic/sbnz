@@ -7,6 +7,7 @@ import { SkiResortService } from 'src/app/core/services/ski-resort/ski-resort.se
 import { TicketsService } from 'src/app/core/services/tickets/tickets.service';
 import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirmation/confirmation.component';
 import { TicketUser } from 'src/app/core/model/TicketUser';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-reservation',
@@ -30,7 +31,9 @@ export class NewReservationComponent implements OnInit {
     private fb: FormBuilder,
     private skiResortService: SkiResortService,
     public dialog: MatDialog,
-    private ticketsService: TicketsService
+    private ticketsService: TicketsService,
+    private toastr: ToastrService
+
 
   ) { }
 
@@ -53,8 +56,8 @@ export class NewReservationComponent implements OnInit {
       senior: [''],
       usingPeriod:[''],
       transportType:[''],
-      loyalty:[''],
-      student: ['']
+      loyalty:[0],
+      student: [0]
  });
   }
 
@@ -73,45 +76,58 @@ export class NewReservationComponent implements OnInit {
     this.res.usingStart = this.ticketForm.get('usingStart')?.value;
     this.res.usingEnd = this.ticketForm.get('usingEnd')?.value;
     this.res.transportType = this.ticketForm.get('transportType')?.value;
-
+    this.res.typeTicket = "POJEDINACNA";
     this.res.ticketUsers = [];
-    this.user = {id: 1, count: this.ticketForm.get('adult')?.value, userType: "ODRASLI", singleTicketPrice: this.skiResort.liftPrice};
-    this.res.ticketUsers.push(this.user);
-    this.user = {id: 2, count: this.ticketForm.get('child')?.value, userType: "DECA", singleTicketPrice: this.skiResort.liftPrice};
-    this.res.ticketUsers.push(this.user);
-    this.user = {id: 3, count: this.ticketForm.get('senior')?.value, userType: "SENIOR", singleTicketPrice: this.skiResort.liftPrice};
-    this.res.ticketUsers.push(this.user);
-
+    if(this.ticketForm.value.adult != 0){
+      this.user = {id: 1, count: this.ticketForm.get('adult')?.value, userType: "ODRASLI", singleTicketPrice: this.skiResort.liftPrice};
+      this.res.ticketUsers.push(this.user);
+    }
+    if(this.ticketForm.value.child != 0){
+      this.user = {id: 2, count: this.ticketForm.get('child')?.value, userType: "DECA", singleTicketPrice: this.skiResort.liftPrice};
+      this.res.ticketUsers.push(this.user);
+    }
+    if(this.ticketForm.value.senior != 0){
+      this.user = {id: 3, count: this.ticketForm.get('senior')?.value, userType: "SENIOR", singleTicketPrice: this.skiResort.liftPrice};
+      this.res.ticketUsers.push(this.user);
+    }
+    this.res.privilege= [];
     // setuj privilegije!!!!!!!!
+    for (var _i = 0; _i < this.ticketForm.value.loyalty; _i++) {
+      this.res.privilege.push('Loyalty 00'+_i);
+    }
+    for (var _i = 0; _i < this.ticketForm.value.student; _i++) {
+      this.res.privilege.push('Student 00'+_i);
+    }
+
+    console.log(this.res);
 
     this.ticketsService.finalPrice(this.res).subscribe(
-       res => {
-         this.res = res.body as Tickets;
-         console.log(res.body);
-    });
-    const message = `Your bill is ` + this.res.bill;
-    const dialogData = new ConfirmDialogModel('Confirm Reservation', message);
-    const dialogRef = this.dialog.open(ConfirmationComponent, {
-      maxWidth: '400px',
-      data: dialogData
-    });
+      res => {
+        this.res = res.body as Tickets;
+        console.log(res.body);
+        const message = `Your bill is ` + this.res.bill;
+        const dialogData = new ConfirmDialogModel('Confirm Reservation', message);
+        const dialogRef = this.dialog.open(ConfirmationComponent, {
+        maxWidth: '400px',
+        data: dialogData
+        });
 
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      this.result = dialogResult;
-      if (this.result === true){
-        console.log("Confirm");
-        // sacuvaj rezervaciju
-        this.ticketsService.add(this.res).subscribe(
-          res =>{
-            console.log("Reservation saved");
+        dialogRef.afterClosed().subscribe(dialogResult => {
+        this.result = dialogResult;
+        if (this.result === true){
+            console.log("Confirm");
+          // sacuvaj rezervaciju
+            this.ticketsService.add(this.res).subscribe(
+              res =>{
+              this.toastr.success('Reservation saved!');
+              console.log("Reservation saved");
+              })
           }
-        )
-      }
+          this.res = {};
+        });
     });
-  }
-
-  confirmDialog(catId: number): void {
     
   }
+
 
 }

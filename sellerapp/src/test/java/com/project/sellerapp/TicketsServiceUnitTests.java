@@ -36,6 +36,125 @@ public class TicketsServiceUnitTests {
                 newReleaseId("com.main", "sellerapp-drools", "0.0.1-SNAPSHOT"));
     }
     
+    
+    @Test
+    public void testLiftTransportType() {
+    	
+    	SkiResortDTO resort = new SkiResortDTO();
+    	resort.setLiftPrice(4500);
+    	TicketsDTO t = new TicketsDTO();
+    	t.setSkiResort(resort);
+    	t.setTypeTicket("POJEDINACNA");
+    	t.setUsingPeriod("POLUDNEVNA");
+    	t.setTransportType("LIFT");
+		
+    	String inputString1 = "25 05 2021";
+		String inputString2 = "28 05 2021";
+		try {
+			Date date1 = myFormat.parse(inputString1);
+		    Date date2 = myFormat.parse(inputString2);
+		    t.setUsingStart(date1);
+		    t.setUsingEnd(date2);
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		
+		
+		Set<TicketUserDTO> ticketUsers = new HashSet<>();
+		TicketUserDTO odrasli = new TicketUserDTO(1L, "ODRASLI", 2, 0);
+		ticketUsers.add(odrasli);
+		t.setTicketUsers(ticketUsers);
+		
+		
+		KieSession kieSession = kieContainer.newKieSession("test-session");
+		kieSession.getAgenda().getAgendaGroup("transport_type").setFocus();
+		kieSession.insert(t);
+		kieSession.fireAllRules();
+		
+		assertEquals(Double.valueOf(4500), t.getTicketUsers().stream().findFirst().get().getSingleTicketPrice());
+		
+		kieSession.dispose();
+    }
+    
+    @Test
+    public void testGondolaTransportType() {
+    	
+    	SkiResortDTO resort = new SkiResortDTO();
+    	resort.setGondolaPrice(1000);
+    	TicketsDTO t = new TicketsDTO();
+    	t.setSkiResort(resort);
+    	t.setTypeTicket("POJEDINACNA");
+    	t.setUsingPeriod("POLUDNEVNA");
+    	t.setTransportType("GONDOLA");
+		
+    	String inputString1 = "25 05 2021";
+		String inputString2 = "28 05 2021";
+		try {
+			Date date1 = myFormat.parse(inputString1);
+		    Date date2 = myFormat.parse(inputString2);
+		    t.setUsingStart(date1);
+		    t.setUsingEnd(date2);
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		
+		
+		Set<TicketUserDTO> ticketUsers = new HashSet<>();
+		TicketUserDTO odrasli = new TicketUserDTO(1L, "ODRASLI", 2, 0);
+		ticketUsers.add(odrasli);
+		t.setTicketUsers(ticketUsers);
+		
+		
+		KieSession kieSession = kieContainer.newKieSession("test-session");
+		kieSession.getAgenda().getAgendaGroup("transport_type").setFocus();
+		kieSession.insert(t);
+		kieSession.fireAllRules();
+		
+		assertEquals(Double.valueOf(1000), t.getTicketUsers().stream().findFirst().get().getSingleTicketPrice());
+		
+		kieSession.dispose();
+    }
+    
+    @Test
+    public void testLiftAndGondolaTransportType() {
+    	
+    	SkiResortDTO resort = new SkiResortDTO();
+    	resort.setLiftPrice(4500);
+    	resort.setGondolaPrice(1000);
+    	TicketsDTO t = new TicketsDTO();
+    	t.setSkiResort(resort);
+    	t.setTypeTicket("POJEDINACNA");
+    	t.setUsingPeriod("POLUDNEVNA");
+    	t.setTransportType("LIFT+GONDOLA");
+		
+    	String inputString1 = "25 05 2021";
+		String inputString2 = "28 05 2021";
+		try {
+			Date date1 = myFormat.parse(inputString1);
+		    Date date2 = myFormat.parse(inputString2);
+		    t.setUsingStart(date1);
+		    t.setUsingEnd(date2);
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		
+		
+		Set<TicketUserDTO> ticketUsers = new HashSet<>();
+		TicketUserDTO odrasli = new TicketUserDTO(1L, "ODRASLI", 2, 0);
+		ticketUsers.add(odrasli);
+		t.setTicketUsers(ticketUsers);
+		
+		
+		KieSession kieSession = kieContainer.newKieSession("test-session");
+		kieSession.getAgenda().getAgendaGroup("transport_type").setFocus();
+		kieSession.insert(t);
+		kieSession.fireAllRules();
+		
+		assertEquals(Double.valueOf(5000), t.getTicketUsers().stream().findFirst().get().getSingleTicketPrice());
+		
+		kieSession.dispose();
+    }
+    
     @Test
     public void testFamilyTicketType() {
     	

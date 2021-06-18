@@ -47,22 +47,8 @@ public class TicketsController {
 
 	@RequestMapping(value = "/final-price", method = RequestMethod.PUT)
 	@PreAuthorize("hasRole('REGISTERED_USER')")
-    public ResponseEntity<TicketsDTO> getTicketType(@RequestBody TicketsDTO ticketsDto) {
-		System.out.println(ticketsDto);
-		SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
-		String inputString1 = "25 05 2021";
-		String inputString2 = "28 05 2021";
-		try {
-			Date date1 = myFormat.parse(inputString1);
-		    Date date2 = myFormat.parse(inputString2);
-		    ticketsDto.setUsingStart(date1);
-		    ticketsDto.setUsingEnd(date2);
-		} catch (Exception e) {
-		    e.printStackTrace();
-		}
-		//Tickets tickets = new Tickets(ticketsDto);
-		log.debug("Item request received for: " + ticketsDto.getId());
-		
+    public ResponseEntity<TicketsDTO> getFinalPrice(@RequestBody TicketsDTO ticketsDto) {
+		log.debug("Item request received for: " + ticketsDto.getSkiResort().getName());
 		double price = ticketsService.getFinalPrice(ticketsDto);
 		System.out.println("Price: " + price);
         return new ResponseEntity<>(ticketsDto, HttpStatus.OK);

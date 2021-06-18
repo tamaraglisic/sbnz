@@ -15,16 +15,16 @@ export class AppComponent {
   constructor(private router: Router) {}
 
   checkRole() {
-	const item = localStorage.getItem('user');
-  console.log(item);
-	if (!item) {
-		this.role = undefined;
-		return;
-	}
+	  const item = localStorage.getItem('user');
+    console.log(item);
+	  if (!item) {
+		  this.role = undefined;
+		  return;
+	  }
 
-	const jwt: JwtHelperService = new JwtHelperService();
-	this.role = jwt.decodeToken(item).role;
-  console.log(this.role);
+	  const jwt: JwtHelperService = new JwtHelperService();
+	  this.role = jwt.decodeToken(item).role;
+    console.log(this.role);
   }
 
 }

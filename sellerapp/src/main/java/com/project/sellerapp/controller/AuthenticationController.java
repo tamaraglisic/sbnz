@@ -1,23 +1,17 @@
 package com.project.sellerapp.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,8 +25,6 @@ import com.project.sellerapp.security.TokenUtils;
 import com.project.sellerapp.service.AdminService;
 import com.project.sellerapp.service.CustomUserDetailsService;
 import com.project.sellerapp.service.RegisteredUserService;
-
-
 
 //Kontroler zaduzen za autentifikaciju korisnika
 @RestController
@@ -85,14 +77,12 @@ public class AuthenticationController {
         return ResponseEntity.ok(new UserTokenStateDTO(jwt, expiresIn));
     }
 
-    
     @RequestMapping(value = "/sign-out", method = RequestMethod.GET)
     public ResponseEntity<?> signOut() throws Exception {   	 
     	SecurityContextHolder.getContext().setAuthentication(null);
         return new ResponseEntity<>(HttpStatus.OK); 
     }
 
-    
 
 	// U slucaju isteka vazenja JWT tokena, endpoint koji se poziva da se token osvezi
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
