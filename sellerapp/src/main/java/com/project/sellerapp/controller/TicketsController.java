@@ -48,10 +48,17 @@ public class TicketsController {
 	@RequestMapping(value = "/final-price", method = RequestMethod.PUT)
 	@PreAuthorize("hasRole('REGISTERED_USER')")
     public ResponseEntity<TicketsDTO> getFinalPrice(@RequestBody TicketsDTO ticketsDto) {
-		log.debug("Item request received for: " + ticketsDto.getSkiResort().getName());
-		double price = ticketsService.getFinalPrice(ticketsDto);
-		System.out.println("Price: " + price);
-        return new ResponseEntity<>(ticketsDto, HttpStatus.OK);
+		
+		try {
+			log.debug("Item request received for: " + ticketsDto.getSkiResort().getName());
+			double price = ticketsService.getFinalPrice(ticketsDto);
+			System.out.println("Price: " + price);
+	        return new ResponseEntity<>(ticketsDto, HttpStatus.OK);
+		}
+		catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
     }
 	
 	@RequestMapping(value="/my-tickets", method = RequestMethod.GET)

@@ -18,7 +18,7 @@ declare SuspiciousReservationEvent
 end
 
 rule "More than 5 login requests in a minute"
-	//agenda-group "login"
+	agenda-group "login"
 	no-loop
     when
         $u1: LoginEvent($username: username)
@@ -36,7 +36,7 @@ rule "More than 5 login requests in a minute"
 end
 
 rule "More than 5 reservations requests in a minute"
-	//agenda-group "reservations"
+	agenda-group "reservations"
 	no-loop
     when
         $u1: ReservationEvent($username: username)

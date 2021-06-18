@@ -105,28 +105,37 @@ export class NewReservationComponent implements OnInit {
       res => {
         this.res = res.body as Tickets;
         console.log(res.body);
-        const message = `Your bill is ` + this.res.bill;
-        const dialogData = new ConfirmDialogModel('Confirm Reservation', message);
-        const dialogRef = this.dialog.open(ConfirmationComponent, {
-        maxWidth: '400px',
-        data: dialogData
-        });
+        if(this.res.bill === 0)
+        {
+          this.toastr.error('Input necessary information');
+       
+        }
+        else{
+          const message = `Your bill is ` + this.res.bill;
+          const dialogData = new ConfirmDialogModel('Confirm Reservation', message);
+          const dialogRef = this.dialog.open(ConfirmationComponent, {
+          maxWidth: '400px',
+          data: dialogData
+          });
 
-        dialogRef.afterClosed().subscribe(dialogResult => {
-        this.result = dialogResult;
-        if (this.result === true){
-            console.log("Confirm");
-          // sacuvaj rezervaciju
-            this.ticketsService.add(this.res).subscribe(
-              res =>{
-              this.toastr.success('Reservation saved!');
-              console.log("Reservation saved");
-              })
-          }
-          this.res = {};
+          dialogRef.afterClosed().subscribe(dialogResult => {
+          this.result = dialogResult;
+          if (this.result === true){
+              console.log("Confirm");
+            // sacuvaj rezervaciju
+              this.ticketsService.add(this.res).subscribe(
+                res =>{
+                this.toastr.success('Reservation saved!');
+                console.log("Reservation saved");
+                })
+            }
+            this.res = {};
         });
+      }
+    }, error=> {
+      this.toastr.error('Input necessary information');
+      
     });
-    
   }
 
 

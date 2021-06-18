@@ -7,15 +7,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.kie.api.runtime.KieContainer;
-import org.kie.api.runtime.KieSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.project.sellerapp.dto.LoginEvent;
+import com.project.sellerapp.dto.ReservationEvent;
 import com.project.sellerapp.dto.TicketUserDTO;
 import com.project.sellerapp.dto.TicketsDTO;
 import com.project.sellerapp.model.RegisteredUser;
@@ -30,8 +28,8 @@ import com.project.sellerapp.repository.TicketsRepository;
 @Service
 public class TicketsService {
 	
-	private static Logger log = LoggerFactory.getLogger(TicketsService.class);
-	private final KieContainer kieContainer;
+//	private static Logger log = LoggerFactory.getLogger(TicketsService.class);
+//	private final KieContainer kieContainer;
 	
 	@Autowired
 	private TicketsRepository ticketsRepository;
@@ -44,44 +42,41 @@ public class TicketsService {
 	private RegisteredUserService registeredUserService;
 	
 	@Autowired
-	public TicketsService(KieContainer kieContainer) {
-		log.info("Initialising a new example session.");
-		this.kieContainer = kieContainer;
-	}
+	private KieService kieService;
+	
 
 	public double getFinalPrice(TicketsDTO tickets) {
-		System.out.println("Getting discount");
-		System.out.println(new Date());
-		KieSession kieSession = kieContainer.newKieSession("test-session");
+		System.out.println("Calculating final price");
+
 		
-		kieSession.getAgenda().getAgendaGroup("transport_type").setFocus();
-		kieSession.insert(tickets);
-		kieSession.fireAllRules();
+		kieService.getRuleSession().getAgenda().getAgendaGroup("transport_type").setFocus();
+		kieService.getRuleSession().insert(tickets);
+		kieService.getRuleSession().fireAllRules();
 		
-		kieSession.getAgenda().getAgendaGroup("using_period").setFocus();
-		kieSession.insert(tickets);
-		kieSession.fireAllRules();
+		kieService.getRuleSession().getAgenda().getAgendaGroup("using_period").setFocus();
+		kieService.getRuleSession().insert(tickets);
+		kieService.getRuleSession().fireAllRules();
 		
-		kieSession.getAgenda().getAgendaGroup("user_type_discount").setFocus();
-		kieSession.insert(tickets);
-		kieSession.fireAllRules();
+		kieService.getRuleSession().getAgenda().getAgendaGroup("user_type_discount").setFocus();
+		kieService.getRuleSession().insert(tickets);
+		kieService.getRuleSession().fireAllRules();
 		
 		
-		kieSession.getAgenda().getAgendaGroup("period_discount").setFocus();
-		kieSession.insert(tickets);
-		kieSession.fireAllRules();
+		kieService.getRuleSession().getAgenda().getAgendaGroup("period_discount").setFocus();
+		kieService.getRuleSession().insert(tickets);
+		kieService.getRuleSession().fireAllRules();
 		
-		kieSession.getAgenda().getAgendaGroup("type_ticket").setFocus();
-		kieSession.insert(tickets);
-		kieSession.fireAllRules();
+		kieService.getRuleSession().getAgenda().getAgendaGroup("type_ticket").setFocus();
+		kieService.getRuleSession().insert(tickets);
+		kieService.getRuleSession().fireAllRules();
 		
-		kieSession.getAgenda().getAgendaGroup("calculating_bill").setFocus();
-		kieSession.insert(tickets);
-		kieSession.fireAllRules();
+		kieService.getRuleSession().getAgenda().getAgendaGroup("calculating_bill").setFocus();
+		kieService.getRuleSession().insert(tickets);
+		kieService.getRuleSession().fireAllRules();
 		
-		kieSession.getAgenda().getAgendaGroup("type_ticket_discount").setFocus();
-		kieSession.insert(tickets);
-		kieSession.fireAllRules();
+		kieService.getRuleSession().getAgenda().getAgendaGroup("type_ticket_discount").setFocus();
+		kieService.getRuleSession().insert(tickets);
+		kieService.getRuleSession().fireAllRules();
 		
 		// preuzimanje usera is konteksta
 		RegisteredUser registeredUser;
@@ -89,44 +84,26 @@ public class TicketsService {
         String username = ((User) currentUser.getPrincipal()).getEmail();
         registeredUser = registeredUserService.findByEmail(username);
         
-		kieSession.getAgenda().getAgendaGroup("regular_guest").setFocus();
-		kieSession.insert(registeredUser);
-		kieSession.insert(tickets);
-		kieSession.fireAllRules();
+        kieService.getRuleSession().getAgenda().getAgendaGroup("regular_guest").setFocus();
+        kieService.getRuleSession().insert(registeredUser);
+        kieService.getRuleSession().insert(tickets);
+        kieService.getRuleSession().fireAllRules();
 		
-		kieSession.getAgenda().getAgendaGroup("occupancy_rate").setFocus();
-		kieSession.insert(tickets.getSkiResort());
+        kieService.getRuleSession().getAgenda().getAgendaGroup("occupancy_rate").setFocus();
+        kieService.getRuleSession().insert(tickets.getSkiResort());
 		Calendar cal = Calendar.getInstance(); 
 		cal.setTime(tickets.getUsingEnd()); 
 		cal.add(Calendar.DATE, 1);
 		Date nextDay = cal.getTime();
 		
 		List<TicketsDTO> res = toDtoList(findTicketsByDate(nextDay, tickets.getSkiResort().getId()));
-		kieSession.insert(res);
+		kieService.getRuleSession().insert(res);
 		//res.forEach(kieSession::insert);
-		kieSession.fireAllRules();
+		kieService.getRuleSession().fireAllRules();
 		System.out.println(tickets.getSkiResort().getOccupacyRate());
-//		
-//		if(tickets.isRegularGuest())
-//		{
-//			kieSession.getAgenda().getAgendaGroup("regular_guest").setFocus();
-//			Calendar cal = Calendar.getInstance(); 
-//			cal.setTime(tickets.getUsingEnd()); 
-//			cal.add(Calendar.DATE, 1);
-//			Date nextDay = cal.getTime();
-//			List<Tickets> res = findTicketsByDate(nextDay, tickets.getSkiResort().getId());
-//			res.forEach(kieSession::insert);
-//			kieSession.fireAllRules();
-//			/*
-//			double occupacy = calculateOccupacy(nextDay, tickets.getSkiResort().getId());
-//			tickets.getSkiResort().setOccupacyForDay(nextDay);
-//			tickets.getSkiResort().setOccupacyRate(occupacy);
-//			*/
-//		}
-//		
-		kieSession.dispose();
+
+		kieService.disposeRuleSession();
 		
-		//tickets.setBill(calculateBill(tickets));
 		System.out.println(tickets);
 		
 		return tickets.getBill();
@@ -164,6 +141,10 @@ public class TicketsService {
 	}
 
 	public Tickets create(TicketsDTO tickets) {
+		
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = ((User) currentUser.getPrincipal()).getEmail();
+        
 		Tickets t = new Tickets();
 
 		SkiResort resort = skiResortRepository.findById(tickets.getSkiResort().getId()).orElse(null);
@@ -182,20 +163,14 @@ public class TicketsService {
 		t.setTicketUsers(ticketUser);
 		t.setBill(tickets.getBill());
 		t = ticketsRepository.save(t);
+		
+		ReservationEvent event = new ReservationEvent(username);
+		kieService.getCepSession().insert(event);
+		kieService.getCepSession().getAgenda().getAgendaGroup("reservations").setFocus();
+		kieService.getCepSession().fireAllRules();
+		System.out.println("reservation event");
+		
 		return t;
 	}
 	
-//	public List<Tickets> findMyTickets(Long id){
-//		List<Tickets> retVal = ticketsRepository.findByRegisteredUserId(id);
-//		return retVal;
-//	}
-	
-//	public double calculateBill(TicketsDTO tickets) {
-//		double bill = 0;
-//		long days = Utility.getDays(tickets.getUsingStart(), tickets.getUsingEnd());
-//		for(TicketUserDTO tu: tickets.getTicketUsers()) {
-//			bill = bill + days*tu.getSingleTicketPrice()*tu.getCount();
-//		}
-//		return bill;
-//	}
 }

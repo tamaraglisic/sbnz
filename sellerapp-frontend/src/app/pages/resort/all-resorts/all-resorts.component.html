@@ -11,8 +11,8 @@
             <th>Season starts</th>
             <th>Season ends</th>
             <th>Capacity</th>
-            <th>Edit resort</th>
-            <th>Delete resort</th>
+            <th  *ngIf="role == 'ROLE_ADMIN'">Edit resort</th>
+            <th  *ngIf="role == 'ROLE_ADMIN'">Delete resort</th>
         
         </tr>
     </thead>
@@ -23,10 +23,10 @@
             <td>{{res.seasonStarts | date}}</td>
             <td>{{res.seasonEnds | date}}</td>
             <td>{{res.capacity}}</td>
-            <td>
+            <td  *ngIf="role == 'ROLE_ADMIN'">
                 <button mat-button color="primary" (click)="edit(res.id)">Edit</button>
             </td>
-            <td>
+            <td  *ngIf="role == 'ROLE_ADMIN'">
                 <button mat-button color="primary" (click)="delete(res.id)">Delete</button>
             </td>
             </tr>

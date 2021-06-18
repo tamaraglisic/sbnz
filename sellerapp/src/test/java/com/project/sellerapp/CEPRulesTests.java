@@ -20,7 +20,7 @@ public class CEPRulesTests {
 	    KieContainer kContainer = ks.newKieContainer(ks.newReleaseId("com.main", "sellerapp-drools", "0.0.1-SNAPSHOT"));
 
 	    KieSession session = kContainer.newKieSession("cepSession");
-	  //  session.getAgenda().getAgendaGroup("login").setFocus();
+	    session.getAgenda().getAgendaGroup("login").setFocus();
 
 	    session.insert(new LoginEvent("admin@gmail.com"));
 	    session.insert(new LoginEvent("admin@gmail.com"));
@@ -40,7 +40,7 @@ public class CEPRulesTests {
 	    KieContainer kContainer = ks.newKieContainer(ks.newReleaseId("com.main", "sellerapp-drools", "0.0.1-SNAPSHOT"));
 
 	    KieSession session = kContainer.newKieSession("cepSession");
-	  //  session.getAgenda().getAgendaGroup("reservations").setFocus();
+	    session.getAgenda().getAgendaGroup("reservations").setFocus();
 	    
 	    session.insert(new ReservationEvent("admin@gmail.com"));
 	    session.insert(new ReservationEvent("admin@gmail.com"));

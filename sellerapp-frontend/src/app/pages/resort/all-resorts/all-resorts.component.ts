@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { SkiResort } from 'src/app/core/model/SkiResort';
 import { SkiResortService } from 'src/app/core/services/ski-resort/ski-resort.service';
 import { EditResortComponent } from '../edit-resort/edit-resort.component';
@@ -11,6 +12,7 @@ import { EditResortComponent } from '../edit-resort/edit-resort.component';
 })
 export class AllResortsComponent implements OnInit {
   resorts: SkiResort[] = [];
+  public role!: string| undefined;
   
   constructor(
     private skiResortService: SkiResortService,
@@ -20,12 +22,26 @@ export class AllResortsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.checkRole()
     this.skiResortService.getAll().subscribe(
       res => {
         this.resorts = res.body as SkiResort[];
        
       });
       
+  }
+
+  checkRole(): void {
+	  const item = localStorage.getItem('user');
+    console.log(item);
+	  if (!item) {
+		  this.role = undefined;
+		  return;
+	  }
+
+	  const jwt: JwtHelperService = new JwtHelperService();
+	  this.role = jwt.decodeToken(item).role;
+    console.log(this.role);
   }
 
   edit(id: any): void {
