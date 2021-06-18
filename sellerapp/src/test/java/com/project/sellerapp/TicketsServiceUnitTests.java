@@ -2,6 +2,7 @@ package com.project.sellerapp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -627,6 +628,7 @@ public class TicketsServiceUnitTests {
 		RegisteredUserDTO regUser =  new RegisteredUserDTO();
 		Set<TicketsDTO> userTickets = new HashSet<>();
 		SkiResortDTO resort = new SkiResortDTO(1L, "Kopaonik");
+		
 		resort.setOccupacyRate(55);
 		// jedna kaarta
 		TicketsDTO t = new TicketsDTO();
@@ -652,10 +654,13 @@ public class TicketsServiceUnitTests {
 		TicketUserDTO senior = new TicketUserDTO(3L, "DECA", 2, 100);
 		ticketUsers.add(senior);
 		t.setTicketUsers(ticketUsers);
-		t.setPrivilege(new HashSet<>());
+		
+		Set<String> privilege = new HashSet<>();
+		t.setPrivilege(privilege);
 		
 		//  karta broj dva
 		TicketsDTO t2 = new TicketsDTO();
+		t2.setPrivilege(new HashSet<String>());
 		t2.setSkiResort(resort);
     	t2.setTypeTicket("PORODICNA");
     	t2.setUsingPeriod("DNEVNA");
@@ -707,6 +712,56 @@ public class TicketsServiceUnitTests {
 		kieSession.fireAllRules();
 		
 		assertEquals("REGULAR_GUEST",  new ArrayList<String>(t.getPrivilege()).get(0));
+		
+		kieSession.dispose();
+	}
+	
+	@Test
+    public void addingDay() {
+		
+		SkiResortDTO resort = new SkiResortDTO(1L, "Kopaonik");
+		resort.setOccupacyRate(55);
+		// jedna kaarta
+		TicketsDTO t = new TicketsDTO();
+		t.setSkiResort(resort);
+    	t.setTypeTicket("PORODICNA");
+    	t.setUsingPeriod("DNEVNA");
+  
+    	String inputString1 = "25 05 2021";
+		String inputString2 = "28 05 2021";
+		try {
+			Date date1 = myFormat.parse(inputString1);
+		    Date date2 = myFormat.parse(inputString2);
+		    t.setUsingStart(date1);
+		    t.setUsingEnd(date2);
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		
+		t.setBill(0);
+		Set<TicketUserDTO> ticketUsers = new HashSet<>();
+		TicketUserDTO odrasli = new TicketUserDTO(1L, "ODRASLI", 5, 100);
+		ticketUsers.add(odrasli);
+		TicketUserDTO senior = new TicketUserDTO(3L, "DECA", 2, 100);
+		ticketUsers.add(senior);
+		t.setTicketUsers(ticketUsers);
+		
+		Set<String> privilege = new HashSet<>();
+		privilege.add("REGULAR_GUEST");
+		t.setPrivilege(privilege);
+		
+		
+		KieSession kieSession = kieContainer.newKieSession("test-session");
+		kieSession.getAgenda().getAgendaGroup("bonus").setFocus();
+		kieSession.insert(t);
+		kieSession.fireAllRules();
+		
+		try {
+			assertEquals(myFormat.parse("29 05 2021"),  t.getUsingEnd());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		kieSession.dispose();
 	}

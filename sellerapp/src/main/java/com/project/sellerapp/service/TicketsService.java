@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.project.sellerapp.dto.LoginEvent;
+import com.project.sellerapp.dto.RegisteredUserDTO;
 import com.project.sellerapp.dto.ReservationEvent;
 import com.project.sellerapp.dto.TicketUserDTO;
 import com.project.sellerapp.dto.TicketsDTO;
@@ -84,8 +84,13 @@ public class TicketsService {
         String username = ((User) currentUser.getPrincipal()).getEmail();
         registeredUser = registeredUserService.findByEmail(username);
         
+        RegisteredUserDTO regDto = new RegisteredUserDTO();
+        regDto.setTickets(toDtoSet(registeredUser.getTickets()));
+        
+        System.out.println(registeredUser.getTickets().stream().findFirst().get().getUsingStart());
+        
         kieService.getRuleSession().getAgenda().getAgendaGroup("regular_guest").setFocus();
-        kieService.getRuleSession().insert(registeredUser);
+        kieService.getRuleSession().insert(regDto);
         kieService.getRuleSession().insert(tickets);
         kieService.getRuleSession().fireAllRules();
 		
@@ -101,6 +106,11 @@ public class TicketsService {
 		//res.forEach(kieSession::insert);
 		kieService.getRuleSession().fireAllRules();
 		System.out.println(tickets.getSkiResort().getOccupacyRate());
+		System.out.println(tickets.getPrivilege());
+		
+		kieService.getRuleSession().getAgenda().getAgendaGroup("bonus").setFocus();
+        kieService.getRuleSession().insert(tickets);
+        kieService.getRuleSession().fireAllRules();
 
 		kieService.disposeRuleSession();
 		
@@ -117,6 +127,16 @@ public class TicketsService {
 		}
 		return retVal;
 	}
+	
+	private Set<TicketsDTO> toDtoSet(Set<Tickets> list){
+		Set<TicketsDTO> retVal = new HashSet<TicketsDTO>();
+		for(Tickets t: list) {
+			TicketsDTO dto = new TicketsDTO(t);
+			retVal.add(dto);
+		}
+		return retVal;
+	}
+	
 	
 	public double calculateOccupacy(Date forDate, Long skiResortId) {
 		int sum = 0;

@@ -14,7 +14,7 @@ rule "Regular Guest"
         $u: RegisteredUserDTO($ts: tickets)
         $reservation: TicketsDTO($id: skiResort.getId())
         accumulate(
-			TicketsDTO($t: this, $datum: usingStart, $datum > Utility.minusMonths(new Date(), 36) && $resort : skiResort) from $ts,         	
+			TicketsDTO($t: this, $datum: usingStart, $datum > Utility.minusMonths(new Date(), 36), $resort : skiResort) from $ts,         	
 			
          	$rezervacije: collectList($t),
          	$resorts: collectList($resort)
@@ -30,20 +30,24 @@ rule "Regular Guest"
     	$reservation.addPrivilege("REGULAR_GUEST");
     	System.out.println("Stalni posetilac" );
 end
-/* OVO pravilo pravi problem testovima
-rule "One day more"
-	agenda-group "regular_guest"
+// OVO pravilo pravi problem testovima
+rule "Add one day"
+	agenda-group "bonus"
 	lock-on-active true
 	salience -1
     when
-        $reservation: TicketsDTO()
+        $reservation: TicketsDTO($resort: skiResort, $p: privilege)
+        Number($Pvalue: intValue) from accumulate(
+        	String($ps: this, this.contains("REGULAR")) from $p,
+        	count($ps)
+        )
         
-       eval($reservation.getSkiResort().getOccupacyRate() <= 60 && $reservation.isRegularGuest())
+       eval($Pvalue >= 0 && $resort.getOccupacyRate() <= 60)
     then
     	$reservation.incrementUsingEnd();
     	System.out.println("Produzena karta");
 end
-*/
+
 rule "Occupancy rate"
 	agenda-group "occupancy_rate"
 	lock-on-active true

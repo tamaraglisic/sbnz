@@ -26,7 +26,7 @@ rule "Price for gondola transport"
         $t: TicketsDTO(transportType == "GONDOLA", $users: ticketUsers, $resort: skiResort)
         $u: TicketUserDTO(userType == "ODRASLI" || userType== "DECA" || userType=="SENIOR") from $users
     then
-    	System.out.println("lift transport" );
+    	System.out.println("gondola transport" );
         $u.setSingleTicketPrice($resort.getGondolaPrice());
        
 end
@@ -38,7 +38,7 @@ rule "Price for gondola+lift transport"
         $t: TicketsDTO(transportType == "LIFT+GONDOLA", $users: ticketUsers, $resort: skiResort)
         $u: TicketUserDTO(userType == "ODRASLI" || userType== "DECA" || userType=="SENIOR") from $users
     then
-    	System.out.println("lift transport" );
+    	System.out.println("lift+gondola transport" );
         $u.setSingleTicketPrice(($resort.getGondolaPrice()/2)+$resort.getLiftPrice());
        
 end

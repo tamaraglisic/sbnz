@@ -111,7 +111,12 @@ export class NewReservationComponent implements OnInit {
        
         }
         else{
-          const message = `Your bill is ` + this.res.bill;
+          let message = `Your bill is ` + this.res.bill;
+          if(this.ticketForm.value.usingStart != this.res.usingStart){
+            message +=`
+            Congratulations, you get one more day!`;
+          }
+          
           const dialogData = new ConfirmDialogModel('Confirm Reservation', message);
           const dialogRef = this.dialog.open(ConfirmationComponent, {
           maxWidth: '400px',
