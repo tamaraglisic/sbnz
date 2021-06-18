@@ -23,6 +23,8 @@ public class TicketsDTO {
 	private double bill;
 	private Set<String> privilege; // student or loyalty
 	
+	private String regGuest;
+	
 	
 	public TicketsDTO() {
 		super();
@@ -221,6 +223,14 @@ public class TicketsDTO {
 				return true;
 		}
 		return false;
+	}
+
+	public String getRegGuest() {
+		return regGuest;
+	}
+
+	public void setRegGuest(String regGuest) {
+		this.regGuest = regGuest;
 	}
 
 	@Override

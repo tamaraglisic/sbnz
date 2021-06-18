@@ -9,7 +9,7 @@ import com.project.sellerapp.helpers.Utility
 
 rule "Regular Guest"
 	agenda-group "regular_guest"
-	lock-on-active true
+	no-loop true
     when
         $u: RegisteredUserDTO($ts: tickets)
         $reservation: TicketsDTO($id: skiResort.getId())
@@ -27,26 +27,12 @@ rule "Regular Guest"
       
        eval($value >= 3 && $rezervacije.size()>=3)
     then
-    	$reservation.addPrivilege("REGULAR_GUEST");
+    	modify($reservation){
+    		addPrivilege("REGULAR_GUEST");
+    	}
     	System.out.println("Stalni posetilac" );
 end
-// OVO pravilo pravi problem testovima
-rule "Add one day"
-	agenda-group "bonus"
-	lock-on-active true
-	salience $Pvalue
-    when
-        $reservation: TicketsDTO($resort: skiResort, $p: privilege)
-        Number($Pvalue: intValue) from accumulate(
-        	String($ps: this, this.contains("REGULAR")) from $p,
-        	count($ps)
-        )
-        
-       eval($Pvalue == 1 && $resort.getOccupacyRate() <= 60)
-    then
-    	$reservation.incrementUsingEnd();
-    	System.out.println("Produzena karta");
-end
+
 
 rule "Occupancy rate"
 	agenda-group "occupancy_rate"
@@ -64,3 +50,21 @@ rule "Occupancy rate"
     	$r.setOccupacyRate(100*$total/$capacity);
     	System.out.println("Occupancy rate");      
 end
+
+rule "Add one day"
+	agenda-group "bonus"
+	no-loop true
+	salience $Pvalue
+    when
+        $reservation: TicketsDTO($resort: skiResort, $p: privilege)
+        Number($Pvalue: intValue) from accumulate(
+        	String($ps: this, this.contains("REGULAR_GUEST")) from $p,
+        	count($ps)
+        )
+        
+       eval($Pvalue >= 1 && $resort.getOccupacyRate() <= 60)
+    then
+    	$reservation.incrementUsingEnd();
+    	System.out.println("Produzena karta");
+end
+
