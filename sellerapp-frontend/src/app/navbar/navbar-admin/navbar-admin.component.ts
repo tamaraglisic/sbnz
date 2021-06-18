@@ -32,6 +32,7 @@ export class NavbarAdminComponent implements OnInit {
     const dialogRef = this.dialog.open(NewResortComponent);
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
+      window.location.reload();
     });
   }
 

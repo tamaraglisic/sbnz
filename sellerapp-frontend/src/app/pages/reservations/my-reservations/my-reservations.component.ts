@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Tickets } from 'src/app/core/model/Tickets';
+import { TicketsService } from 'src/app/core/services/tickets/tickets.service';
 
 @Component({
   selector: 'app-my-reservations',
@@ -10,21 +11,34 @@ export class MyReservationsComponent implements OnInit {
 
   list: Array<Tickets> = [];
 
-  constructor() { }
+  constructor(
+    private ticketsService: TicketsService
+  ) { }
 
   ngOnInit(): void {
-    let tick: Tickets;
-    tick = {'id':1};
-    let tick2: Tickets;
-    tick2 = {'id':2};
-    this.list.push(tick);
-    this.list.push(tick2);
+    this.ticketsService.myTickets().subscribe(
+      res=>{
+        this.list = res.body as Array<Tickets>;
+      }
+    )
 
   }
 
   cancelReservation(id:any): void{
     console.log(id);
   }
+  archive(): void{
 
+  }
+
+  newRes(): void{
+    
+  }
+
+  compareDates(startDate: any): boolean{
+    let currentDate = new Date();
+
+   return startDate-currentDate.getTime() > 432000000;
+  }
 
 }

@@ -1,6 +1,17 @@
+<form class="reactiveForm" [formGroup]="searchForm" (ngSubmit)="search()">
+    <div class="example-container">
+    <mat-form-field appearance="fill">
+        <mat-label>Search by name</mat-label>
+        <input id="searchContent" matInput formControlName="name">
+    </mat-form-field>
+    <mat-dialog-actions align="end">
+        <button id="submitSearch" type="submit" mat-raised-button color="success">Search</button>
+    </mat-dialog-actions>
+    </div>
+</form>
+
+
 <div style="margin-left: 20px;">
-    <br>
-    <br>
     <br>
     <table class="styled-table">
         <thead>

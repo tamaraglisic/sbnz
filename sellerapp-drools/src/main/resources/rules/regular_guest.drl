@@ -34,7 +34,7 @@ end
 rule "Add one day"
 	agenda-group "bonus"
 	lock-on-active true
-	salience -1
+	salience $Pvalue
     when
         $reservation: TicketsDTO($resort: skiResort, $p: privilege)
         Number($Pvalue: intValue) from accumulate(

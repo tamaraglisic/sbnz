@@ -1,0 +1,10 @@
+
+package com.main
+
+import com.project.sellerapp.model.*;
+
+
+
+query "findResortByName" (String conatainsName)
+    resort: SkiResort(name.toLowerCase().contains(conatainsName.toLowerCase()))
+end;

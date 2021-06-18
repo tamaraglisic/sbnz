@@ -1,8 +1,11 @@
 package com.project.sellerapp.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.kie.api.runtime.rule.QueryResults;
+import org.kie.api.runtime.rule.QueryResultsRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +24,8 @@ public class SkiResortService {
 	
 	@Autowired
 	private TicketsRepository ticketsRepository;
+	@Autowired
+	private KieService kieService;
 	
 	public List<SkiResort> findAll(){
 		return repository.findByActive(true);
@@ -110,5 +115,24 @@ public class SkiResortService {
 			return repository.save(created);
 		}
 		return null;
+	}
+
+	public List<SkiResort> findByActive(boolean b) {
+		// TODO Auto-generated method stub
+		return repository.findByActive(true);
+	}
+	
+	public List<SkiResort> findByName(String name){
+		List<SkiResort> activeResorts = findByActive(true);
+		List<SkiResort> retVal = new ArrayList<>();
+		activeResorts.forEach(kieService.getRuleSession()::insert);
+		QueryResults res = kieService.getRuleSession().getQueryResults("findResortByName", name);
+	    for(QueryResultsRow row: res) {
+	    	SkiResort resort = (SkiResort)row.get("resort");
+	    	retVal.add(resort);
+	    }
+	    kieService.disposeRuleSession();
+	    return retVal;
+	     
 	}
 }

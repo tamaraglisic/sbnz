@@ -38,6 +38,16 @@ export class TicketsService {
         return this.http.post(`${environment.baseUrl}/${environment.tickets}`, newReservation, queryParams).pipe(map(res => res));
     }
 
+    myTickets():  Observable<any> {
+		let queryParams = {};
+        queryParams = {
+            headers: this.headers,
+            observe: 'response',
+            params: new HttpParams()
+        };
+		return this.http.get(`${environment.baseUrl}/${environment.tickets}/my-tickets`, queryParams).pipe(map(res => res));
+	}
+
 	
 
 }

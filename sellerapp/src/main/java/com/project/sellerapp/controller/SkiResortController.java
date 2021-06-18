@@ -36,7 +36,7 @@ public class SkiResortController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	@PreAuthorize("hasAnyRole('REGISTERED_USER', 'ROLE_ADMIN')")
+	//@PreAuthorize("hasAnyRole('REGISTERED_USER', 'ROLE_ADMIN')")
 	public ResponseEntity<List<SkiResortDTO>> getAllResorts(){
 		List<SkiResort> resorts = skiResortService.findAll();
 		return new ResponseEntity<>(toDTOList(resorts), HttpStatus.OK);
@@ -51,8 +51,17 @@ public class SkiResortController {
 		return new ResponseEntity<>(new SkiResortDTO(resort), HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/search/{name}" , method = RequestMethod.GET)
+	public ResponseEntity<List<SkiResortDTO>>searchByName(@PathVariable String name){
+		List<SkiResort> resort = skiResortService.findByName(name);
+		if(resort == null)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		
+		return new ResponseEntity<>(toDTOList(resort), HttpStatus.OK);
+	}
+	
 	@RequestMapping(value="/occupancy/{id}", method = RequestMethod.GET)
-	@PreAuthorize("hasAnyRole('REGISTERED_USER', 'ROLE_ADMIN')")
+	//@PreAuthorize("hasAnyRole('REGISTERED_USER', 'ROLE_ADMIN')")
 	public ResponseEntity<List<Occupancy>> getOccupancyForDays(@PathVariable Long id){
 		List<Occupancy> retVal = new ArrayList<Occupancy>();
 		Date forDay = new Date();

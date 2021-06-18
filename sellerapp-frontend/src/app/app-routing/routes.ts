@@ -34,7 +34,7 @@ export const routes :Routes = [
 	{
 		path: 'capacity',
 		component: ResortCapacityComponent,
-		canActivate: [LoginGuard]
+	//	canActivate: [LoginGuard]
 
 	},
 	{
@@ -45,6 +45,11 @@ export const routes :Routes = [
 	{
 		path:'ski-resorts',
 		component: AllResortsComponent,
+		//canActivate: [LoginGuard]
+	},
+	{
+		path:'home',
+		component: ResortChooserComponent,
 		//canActivate: [LoginGuard]
 	}
 ];

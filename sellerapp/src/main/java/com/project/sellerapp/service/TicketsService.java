@@ -106,7 +106,7 @@ public class TicketsService {
 		//res.forEach(kieSession::insert);
 		kieService.getRuleSession().fireAllRules();
 		System.out.println(tickets.getSkiResort().getOccupacyRate());
-		System.out.println(tickets.getPrivilege());
+		
 		
 		kieService.getRuleSession().getAgenda().getAgendaGroup("bonus").setFocus();
         kieService.getRuleSession().insert(tickets);

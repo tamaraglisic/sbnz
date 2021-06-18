@@ -2,23 +2,30 @@
     <br>
     <br>
     <br>
+    <!-- <button style="margin-left: 150px;" mat-raised-button (click)="archive()">Archive</button>
+    <button  mat-raised-button (click)="newRes()" style="margin-left: 10px;">Active</button> -->
     <table class="styled-table">
         <thead>
         <tr>         
          
-            <th>Th1</th>
-            <th>Th2</th>
+            <th>Ski Resort</th>
+            <th>Using start</th>
+            <th>Using end</th>
+            <th>Bill</th>
             <th>Cancel reservation</th>
             
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let res of list">
-            <td>{{res.id}}</td>
-            <td>td2</td>
-            <td>
+            <td>{{res.skiResort.name}}</td>
+            <td>{{res.usingStart | date}}</td>
+            <td>{{res.usingEnd | date}}</td>
+            <td>{{res.bill}}</td>
+            <td *ngIf="!compareDates(res.usingStart)"></td>
+            <td *ngIf="compareDates(res.usingStart)">
                 <!-- dva dana pre pocetka moze da otkaze rez-->
-                <button mat-button color="primary" (click)="cancelReservation(res.id)">Cancel</button>
+                <button   mat-button color="primary" (click)="cancelReservation(res.id)">Cancel</button>
             </td>
             </tr>
     </tbody>

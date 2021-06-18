@@ -50,6 +50,18 @@ export class SkiResortService {
 
 	}
 
+	search(name: any): Observable<any> {
+
+		let queryParams = {};
+        queryParams = {
+            headers: this.headers,
+            observe: 'response',
+            params: new HttpParams()
+        };
+		return this.http.get(`${environment.baseUrl}/${environment.skiResort}/search/`+name,  queryParams).pipe(map(res => res));
+
+	}
+
 	edit(resort: any){
         return this.http.put(`${environment.baseUrl}/${environment.skiResort}`, resort, {headers: this.headers, responseType: 'json'});
 

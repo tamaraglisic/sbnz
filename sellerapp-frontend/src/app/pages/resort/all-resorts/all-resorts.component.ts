@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { SkiResort } from 'src/app/core/model/SkiResort';
 import { SkiResortService } from 'src/app/core/services/ski-resort/ski-resort.service';
+import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirmation/confirmation.component';
 import { EditResortComponent } from '../edit-resort/edit-resort.component';
 
 @Component({
@@ -13,15 +15,19 @@ import { EditResortComponent } from '../edit-resort/edit-resort.component';
 export class AllResortsComponent implements OnInit {
   resorts: SkiResort[] = [];
   public role!: string| undefined;
+  result: any;
+  searchForm!: FormGroup;
   
   constructor(
     private skiResortService: SkiResortService,
     public dialog: MatDialog,
+    private fb: FormBuilder,
  
 
   ) { }
 
   ngOnInit(): void {
+    this.createForm()
     this.checkRole()
     this.skiResortService.getAll().subscribe(
       res => {
@@ -31,6 +37,20 @@ export class AllResortsComponent implements OnInit {
       
   }
 
+  createForm():void{
+    this.searchForm = this.fb.group({
+      name: ['']
+      });
+
+  }
+
+  search():void{
+    this.skiResortService.search(this.searchForm.value.name).subscribe(
+      res=>{
+        this.resorts = res.body as SkiResort[];
+      }
+    )
+  }
   checkRole(): void {
 	  const item = localStorage.getItem('user');
     console.log(item);
@@ -54,16 +74,25 @@ export class AllResortsComponent implements OnInit {
   }
 
   delete(id: any): void{
-    console.log("delete -> " + id);
-    this.skiResortService.delete(id).subscribe(
-      result => {
-        console.log("DELETED")
-        window.location.reload();
-      }, error => {
-        console.log("Error")
+    const message = `Are you sure you want to delete resort?`
+    const dialogData = new ConfirmDialogModel('Confirm Action', message);
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+        maxWidth: '400px',
+        data: dialogData
+    });
 
-      }
-    );
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+        if (this.result === true){
+          this.skiResortService.delete(id).subscribe(
+            result => {
+              console.log("DELETED")
+              window.location.reload();
+            }, error => {
+              console.log("Error")
+      
+            });
+          }
+      })
   }
-
 }
